@@ -1,0 +1,75 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="главня.css" rel="stylesheet">
+</head>
+<body>
+    <div id="inf">
+        <div id="name">
+            <img src="fotor-ai-20250129000.jpg" alt="" width="100px" height="70px">
+        </div>
+        <div class="buttons-container">
+            <a href="http://daruse.ru/generator-knopok-online" class="so" target="_blank">Кнопка</a>
+            <a href="http://daruse.ru/generator-knopok-online" class="so" target="_blank">Кнопка</a>
+            <a href="http://daruse.ru/generator-knopok-online" class="so" target="_blank">Кнопка</a>
+        </div>
+        <input type="text" name="poisk" value="" class="poisk"> 
+    </div>
+    
+   <div id="жанры">
+    <input type="checkbox" class="custom-checkbox" id="happy1" name="happy1" value="yes">
+    <label for="happy1">RPG</label>
+    
+    <input type="checkbox" class="custom-checkbox" id="happy2" name="happy2" value="yes">
+    <label for="happy2">Шутеры</label>
+    
+    <input type="checkbox" class="custom-checkbox" id="happy3" name="happy3" value="yes">
+    <label for="happy3">Гонки</label>
+    
+    <input type="checkbox" class="custom-checkbox" id="happy4" name="happy3" value="yes">
+    <label for="happy4">Экшен</label>
+
+    <input type="checkbox" class="custom-checkbox" id="happy5" name="happy5" value="yes">
+    <label for="happy5">Стратегии</label>
+
+    <input type="checkbox" class="custom-checkbox" id="happy6" name="happy3" value="yes">
+    <label for="happy6">Файтинг </label>
+
+    <input type="checkbox" class="custom-checkbox" id="happy7" name="happy3" value="yes">
+    <label for="happy7">Хоррор</label>
+
+    <input type="checkbox" class="custom-checkbox" id="happy8" name="happy3" value="yes">
+    <label for="happy8">Симулятор</label>
+    
+    <input type="checkbox" class="custom-checkbox" id="happy9" name="happy3" value="yes">
+    <label for="happy9">Аркады</label>
+
+    <input type="checkbox" class="custom-checkbox" id="happy10" name="happy3" value="yes">
+    <label for="happy10">Стелс </label>
+
+    <input type="checkbox" class="custom-checkbox" id="happy11" name="happy3" value="yes">
+    <label for="happy11">товер дефенс</label>
+</div>
+<div class="game-indi">
+    <div id="тэги"></div>
+    <input id="polzynok" type="range" />
+    <div class="game_block"> 
+        <div class="foto">      
+              </div >
+              <div class="opis">
+     <h3> гонка ультра</h3>
+     <p>{% for opis in opis %}{{ opis }}{% endfor %}</p>
+            </div>
+            <div class="tegi_indi">
+            </div>
+    </div>
+</div>
+
+
+</body>
+</html>
