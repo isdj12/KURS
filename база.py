@@ -38,7 +38,8 @@ def glavna():
         return redirect(url_for('glavna'))
 
     db_data = Database.query.all()
-    return render_template('glavna.html', db_data=db_data, css_file=url_for('static', filename='главня.css')) 
+    print(db_data)  
+    return render_template('glavna.html', db_data=db_data, css_file=url_for('static', filename='главня.css'))
 
 
 if __name__ == '__main__':
