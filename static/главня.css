@@ -1,55 +1,57 @@
 body {
-  border-style: none; 
-  position: relative; 
-  width: 100vw; 
-  height: 100vh; 
-  font-family: Arial, sans-serif; 
+  border-style: none;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  margin: 0; /* Убираем отступы по умолчанию */
+  overflow-x: hidden; /* Предотвращаем горизонтальную прокрутку */
 }
 
 #inf {
   display: flex;
-  flex-direction: column; 
-  background-color: white; 
-  color: black;  
-  width: max-content;  
-  padding: 1%; /* Примерное значение */
-  position: absolute; 
-  top: 0;  
-  left: 0; 
+  flex-direction: column;
+  background-color: white;
+  color: black;
+  width: max-content;
+  padding: 1%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .buttons-container {
-  display: flex; 
-  gap: 1%; /* Примерное значение */
+  display: flex;
+  gap: 1%;
 }
 
 .so {
-  display: flex !important;
-  justify-content: center; 
-  align-items: center; 
-  text-decoration: none !important;
-  background-color: #eaeaea !important;
-  color: #006089 !important;
-  border: 1px solid #006089 !important;
-  padding: 2% 10%; /* Примерное значение */
-  transition: all 0.8s ease !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  background-color: #eaeaea;
+  color: #006089;
+  border: 1px solid #006089;
+  padding: 2% 10%;
+  transition: all 0.8s ease;
+    white-space: nowrap; /* Запрещаем перенос текста */
 }
 
 .so:hover {
-  text-decoration: none !important; 
-  background-color: #006089 !important;
-  color: #ffeded !important;
-  border-color: #006089 !important;
+  background-color: #006089;
+  color: #ffeded;
+  border-color: #006089;
 }
 
 .poisk {
-  height: 5%; /* Изменено для пропорциональности */
-  width: 100%; /* Примерное значение */
-  margin-top: 2%; /* Примерное значение */
+  height: 5%;
+  width: 95%; /* Чтобы не выходил за пределы родителя */
+  margin-top: 2%;
 }
 
 #жанры {
-  top: 25%; /* Увеличено относительно высоты контейнера */
+    top: 25%; /* Увеличено относительно высоты контейнера */
   padding: 1%; /* Примерное значение */
   margin-top: 2%; /* Уменьшено расстояние между инфо и жанрами */
   height: 70%; /* Изменено для пропорциональности */
@@ -58,8 +60,11 @@ body {
   border-bottom: 1px solid black !important;
   border-top: 1px solid black !important;
   border-right: 1px solid black !important;
-  position: absolute; 
-  left: 0; 
+  position: absolute;
+  left: 0;
+  display: flex; /* Используем flexbox для вертикального выравнивания */
+  flex-direction: column; /* Элементы располагаются в колонку */
+  gap: 5px; /* Промежуток между элементами */
 }
 
 
@@ -112,49 +117,65 @@ body {
   /* стили для чекбокса, находящегося в состоянии disabled */
   .custom-checkbox:disabled+label::before {
     background-color: #e9ecef;
-  } 
+  }
 
-  .game-indi {
-    position: absolute; 
-    top: 50%; /* Установка вертикального центра */
-    left: 50%; /* Установка горизонтального центра */
-    transform: translate(-50%, -50%); /* Смещение обратно на половину высоты и ширины для центрирования */
-    height: 1190px;
-    width: 1500px; /* Ширина должна быть достаточной для визуализации границ */
+.game-indi {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 80vh;  /*  Занимает 80% высоты видимой области */
+    width: 60vw; /* Занимает 80% ширины видимой области */
     background-color: white;
-    border-right: 1px solid #80bdff !important;
-    border-top: 1px solid #80bdff !important;
-    border-left: 1px solid #80bdff !important; 
-    border-bottom: 1px solid #80bdff !important;
-    margin-top: 10px; /* Уменьшено расстояние между инфо и жанрами */
+    border: 1px solid #80bdff;  /*  Одна общая рамка */
+    overflow-y: auto; /*  Добавляем вертикальную прокрутку */
+    padding: 20px; /* Добавляем отступы внутри */
 }
 
+/*  Стили для контейнера карточек (чтобы карточки располагались в ряд) */
+.kart-container {
+    display: flex;
+    flex-wrap: wrap; /* Разрешаем перенос на новую строку */
+    gap: 20px; /* Расстояние между карточками */
+    justify-content: space-around; /* Равномерно распределяем пространство */
 
-#тэги {
-  padding: 100px;
-  margin-top: 10px; /* Уменьшено расстояние между инфо и жанрами */
-  height: 50px;
-  width: 1300px;
+}
+
+.kart {
+  display: flex; /* Используем flexbox */
+  flex-direction: row; /* Элементы в строку (по умолчанию)*/
+  width: 45%; /* Ширина карточки (примерно) */
   background-color: white;
-  border-bottom: 1px solid black !important;
-  border-top: 1px solid black !important;
-  border-right: 1px solid black !important;
-  position: absolute; /* Установлено абсолютное позиционирование */
-  left: 0; /* Прижато к левому краю */
+  border: 1px solid black;
+  margin-bottom: 10px; /* Отступ снизу */
+}
+
+.foto {
+    width: 55%;
+    height: auto; /* Высота подстраивается автоматически */
+    object-fit: cover; /*  Обрезаем изображение, сохраняя пропорции */
+     border: 1px solid black;
+}
+
+.opis {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5%;
+  flex-grow: 1; /*  Растягиваем блок описания */
+}
+
+.tegi_indi {
+    margin-top: auto;/* Прижимаем теги к низу */
+    border: 1px solid black;
+    padding: 5px;
+    width: fit-content; /* Ширина по содержимому */
+    margin-bottom: 5px;
 }
 
 #polzynok[type="range"] {
-  position: relative; /* Изменено для позиционирования ползунка */
-  top: 1390px; /* Если нужно, иначе уберите */
-  margin-left: 0; /* Убедитесь, что отступ слева 0 */
-  -webkit-appearance: none; /* Убирает стандартные стили для Safari */
-  width: 100%; /* Ширина ползунка */
-  height: 5px; /* Высота ползунка */
-  background: #ddd; /* Цвет фона ползунка */
-  border-radius: 5px; /* Скругленность углов */
-  outline: none; /* Убирает рамку при фокусе */
+    width: 100%; /*  Полная ширина */
+    margin-top: 10px;
 }
-
 /* Остальной код для ползунка остаётся таким же */
 #polzynok[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; /* Убирает стандартный стиль */
@@ -184,33 +205,6 @@ body {
   cursor: pointer; /* Указатель при наведении */
 }
 
-.game_block{
-  display: flex;
-  top: 20%; /* Увеличено относительно высоты контейнера */
-  padding: 1%; /* Примерное значение */
-  margin-top: 2%; /* Уменьшено расстояние между инфо и жанрами */
-  height: 20%; /* Изменено для пропорциональности */
-  width: 30%; /* Примерное значение */
-  background-color: white;
-  border: 1px solid black !important;
-  position: absolute; 
-  left: 4%; }
-  
-
-.foto{
-  border: 1px solid black !important;
-  width: 55%;
-  height: 100%;
-}
-
-.opis{
-  display: block;
-  margin-left: 5%; 
-  margin-top: -30px;
-}
-
-.tegi_indi{
-  border: 1px solid black !important;
-  width: 25%;
-  height: 100%;
+#тэги{
+  display: none;
 }
