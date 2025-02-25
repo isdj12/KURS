@@ -9,12 +9,12 @@ db = SQLAlchemy(app)
 
 class Database(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    opis = db.Column(db.String(1000), nullable=False)  # Увеличил длину, чтобы вместить описание
+    opis = db.Column(db.String(1000), nullable=False)
     name = db.Column(db.String(150), nullable=False)
-    teg1 = db.Column(db.String(50), nullable=False) #Увеличил длину тегов
+    teg1 = db.Column(db.String(50), nullable=False)
     teg2 = db.Column(db.String(50), nullable=True)
     teg3 = db.Column(db.String(50), nullable=True)
-    image = db.Column(db.String(255), nullable=True) # Добавлено поле для хранения пути к изображению
+    image = db.Column(db.String(255), nullable=True)
 
     def __init__(self, opis, name, teg1, teg2=None, teg3=None, image=None):
         self.opis = opis
@@ -32,34 +32,46 @@ with app.app_context():
 @app.route('/', methods=['GET', 'POST'])
 def glavna():
     if request.method == 'POST':
-        # Получаем данные из формы
-        opis = request.form.get('opis')  # Используем .get() для безопасности
+        # Обработка формы добавления новой игры
+        opis = request.form.get('opis')
         name = request.form.get('name')
         teg1 = request.form.get('teg1')
         teg2 = request.form.get('teg2')
         teg3 = request.form.get('teg3')
-        image = request.form.get('image') # Получение пути к изображению (если есть)
+        image = request.form.get('image')
 
-        # Валидация: проверяем, что обязательные поля заполнены
         if not opis or not name or not teg1:
             flash('Поля "Описание", "Название" и "Тег1" обязательны к заполнению.')
             return redirect(url_for('glavna'))
 
-        # Создаем новый объект и добавляем в БД
         new_game = Database(opis=opis, name=name, teg1=teg1, teg2=teg2, teg3=teg3, image=image)
         db.session.add(new_game)
         try:
             db.session.commit()
             flash('Новая игра добавлена!')
         except Exception as e:
-            db.session.rollback()  # Откатываем изменения в случае ошибки
+            db.session.rollback()
             flash(f'Произошла ошибка при добавлении игры: {e}')
         return redirect(url_for('glavna'))
 
-    # Получаем все записи из базы данных для отображения на странице
-    games = Database.query.all()
-    return render_template('glavna.html', glavna=games, css_file=url_for('static', filename='главня.css'))
+    # Обработка GET-запроса (отображение игр и фильтрация)
+    selected_genres = request.args.getlist('genre')  # Получаем список выбранных жанров
 
+    games = Database.query.all()  # По умолчанию показываем все игры
+
+    if selected_genres:
+        # Фильтруем игры по выбранным жанрам
+        filtered_games = []
+        for game in games:
+            # Проверяем, соответствует ли хотя бы один тег игры выбранному жанру
+            game_tags = [game.teg1, game.teg2, game.teg3]
+            for genre in selected_genres:
+                if any(genre.lower() in str(tag).lower() for tag in game_tags if tag):  #Проверяем, что тег не None
+                    filtered_games.append(game)
+                    break  # Переходим к следующей игре, если нашли соответствие
+        games = filtered_games  # Обновляем список игр для отображения
+
+    return render_template('glavna.html', glavna=games, css_file=url_for('static', filename='главня.css'))
 
 if __name__ == '__main__':
     app.run(debug=True)

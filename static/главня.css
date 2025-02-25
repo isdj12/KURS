@@ -8,6 +8,7 @@ body {
   overflow-x: hidden; /* Предотвращаем горизонтальную прокрутку */
 }
 
+
 #inf {
   display: flex;
   flex-direction: column;
@@ -33,7 +34,8 @@ body {
   background-color: #eaeaea;
   color: #006089;
   border: 1px solid #006089;
-  padding: 2% 10%;
+  padding: 20px;
+  width: 200px;
   transition: all 0.8s ease;
     white-space: nowrap; /* Запрещаем перенос текста */
 }
@@ -208,3 +210,4 @@ body {
 #тэги{
   display: none;
 }
+
