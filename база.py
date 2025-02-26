@@ -40,19 +40,6 @@ def glavna():
         teg3 = request.form.get('teg3')
         image = request.form.get('image')
 
-        if not opis or not name or not teg1:
-            flash('Поля "Описание", "Название" и "Тег1" обязательны к заполнению.')
-            return redirect(url_for('glavna'))
-
-        new_game = Database(opis=opis, name=name, teg1=teg1, teg2=teg2, teg3=teg3, image=image)
-        db.session.add(new_game)
-        try:
-            db.session.commit()
-            flash('Новая игра добавлена!')
-        except Exception as e:
-            db.session.rollback()
-            flash(f'Произошла ошибка при добавлении игры: {e}')
-        return redirect(url_for('glavna'))
 
     # Обработка GET-запроса (отображение игр и фильтрация)
     selected_genres = request.args.getlist('genre')  # Получаем список выбранных жанров

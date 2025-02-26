@@ -62,10 +62,9 @@
             <input type="checkbox" class="custom-checkbox" id="happy11" name="genre" value="товер дефенс">
             <label for="happy11">товер дефенс</label>
 
-            <form action="/" method="GET">
                 <!-- ... Ваши чекбоксы для жанров ... -->
                 <button type="submit" class="btn btn-primary mt-3">Применить фильтры</button>
-            </form>
+        
        </form>
     </div>
 
@@ -81,11 +80,12 @@
                         <img src="{{ url_for('static', filename='placeholder.png') }}" alt="Placeholder" class="foto">
                         <!--  Добавьте placeholder.png в static -->
                     {% endif %}
-
+                    <button class='so'> побробнее </button>
                     <div class="opis">
                         <h2>{{ item.name }}</h2>
                         <p>{{ item.opis }}</p>
                         <div class="tegi_indi">
+                        
                            Теги: {{ item.teg1 }}{% if item.teg2 %}, {{ item.teg2 }}{% endif %}{% if item.teg3 %}, {{ item.teg3 }}{% endif %}
                         </div>
                     </div>
