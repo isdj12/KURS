@@ -61,10 +61,15 @@ def glavna():
     return render_template('glavna.html', glavna=games, css_file=url_for('static', filename='главня.css'))
 
 
-    
-@app.route('/karta1')
-def karta1():
-    return render_template('karta1.html',  css_file=url_for('static', filename='karta1.css'))
-
+@app.route('/karta1/<int:id>') #Убрал лишнюю запятую
+def karta1(id):
+    karta1_item = Database.query.get_or_404(id)
+    if karta1_item:      
+        items = [karta1_item]  
+        return render_template('karta1.html', items = items, css_file=url_for('static',filename='karta1.css'))
+    else:
+        flash('Номер не найден')
+        return redirect(url_for('home'))
 if __name__ == '__main__':
     app.run(debug=True)
+        
