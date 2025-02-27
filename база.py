@@ -14,7 +14,7 @@ class Database(db.Model):
     teg1 = db.Column(db.String(50), nullable=False)
     teg2 = db.Column(db.String(50), nullable=True)
     teg3 = db.Column(db.String(50), nullable=True)
-    image = db.Column(db.string(255), nullable=True)
+    image = db.Column(db.String(255), nullable=True)
 
     def __init__(self, opis, name, teg1, teg2=None, teg3=None, image=None):
         self.opis = opis
@@ -59,6 +59,12 @@ def glavna():
         games = filtered_games  # Обновляем список игр для отображения
 
     return render_template('glavna.html', glavna=games, css_file=url_for('static', filename='главня.css'))
+
+
+    
+@app.route('/karta1')
+def karta1():
+    return render_template('karta1.html',  css_file=url_for('static', filename='karta1.css'))
 
 if __name__ == '__main__':
     app.run(debug=True)
