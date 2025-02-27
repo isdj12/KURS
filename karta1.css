@@ -133,3 +133,33 @@ img {
         margin-bottom: 20px;
     }
 }
+
+.indi_download{
+    
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        background-color: #eaeaea;
+        color: #006089;
+        border: 1px solid #006089;
+        padding: 20px;
+        width: 200px;
+        transition: all 0.8s ease;
+          white-space: nowrap; /* Запрещаем перенос текста */
+      
+}
+
+.indi_download:hover {
+background-color: #006089;
+color: #ffeded;
+border-color: #006089;}
+
+.info{
+    flex: 1;
+    background-color: var(--light-color); /* White */
+    color: #006089; /* Blue */
+    padding: 20px;
+    border: 1px solid  #80bdff; /* Добавлен стиль solid (сплошная) */
+    
+}
