@@ -16,7 +16,8 @@ class Database(db.Model):
     teg3 = db.Column(db.String(50), nullable=True)
     image = db.Column(db.String(255), nullable=True)
 
-    def __init__(self, opis, name, teg1, teg2=None, teg3=None, image=None):
+    def __init__(id, self, opis, name, teg1, teg2=None, teg3=None, image=None):
+        self.id = id
         self.opis = opis
         self.name = name
         self.teg1 = teg1
@@ -33,6 +34,7 @@ with app.app_context():
 def glavna():
     if request.method == 'POST':
         # Обработка формы добавления новой игры
+        id = request.form.get('id')
         opis = request.form.get('opis')
         name = request.form.get('name')
         teg1 = request.form.get('teg1')

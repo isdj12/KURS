@@ -80,7 +80,7 @@
                         <img src="{{ url_for('static', filename='placeholder.png') }}" alt="Placeholder" class="foto">
                         <!--  Добавьте placeholder.png в static -->
                     {% endif %}
-                    <button class='so'> побробнее </button>
+                    <a class='so' href="http://127.0.0.1:5000/karta1/{{ item.id }}"> побробнее </a>
                     <div class="opis">
                         <h2>{{ item.name }}</h2>
                         <p>{{ item.opis }}</p>
