@@ -10,25 +10,29 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-         <img src="{{ url_for('static', filename='Screenshot_6.png') }}" alt="Логотип" width="500px" height="100px">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Переключать навигацию">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-            <a href="#" class="so">Кнопка 1</a>
-                <a href="#" class="so">Кнопка 2</a>
-                <a href="#" class="so">Кнопка 3</a>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
-              <button class="btn btn-outline-success" type="submit"><ya-tr-span data-index="5-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Search" data-translation="Поиск" data-ch="1" data-type="trSpan" style="visibility: inherit !important;">Поиск</ya-tr-span></button>
+        <div class="container-fluid" style="height: 75px;">
+          
+          <div style="display: flex; align-items: center; justify-content: space-between; height: 100%;">     
+              <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" height="90px" >            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"aria-controls="navbarCollapse" aria-expanded="false" aria-label="Переключать навигацию">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="d-flex">
+           
+              <a href="#" class="so">Кнопка 1</a>
+              <a href="#" class="so">Кнопка 2</a>
+              <a href="#" class="so">Кнопка 3</a>
+            </div>
+            <form class="d-flex ml-auto" role="search">
+              <input class="form-control_me-2" type="search" placeholder="Поиск" aria-label="Поиск">
+              <button class="btn_btn-outline-success" type="submit">Поиск</button>
             </form>
-          </div>
-        </div>
+            <span class="Button-label"><img src="https://avatars.githubusercontent.com/u/185120112?v=4" alt="" size="32" height="50" width="50" data-view-component="true" class="avatar circle" ></span>
       </nav>
-
+    
    <div id="жанры">
-       <!-- Добавил обертку form и кнопку submit для фильтрации -->
-       <form action="/" method="GET">  <!--  Используем GET для фильтрации -->
+   
+       <form action="/" method="GET">  
             <input type="checkbox" class="custom-checkbox" id="happy1" name="genre" value="RPG">
             <label for="happy1">RPG</label>
 

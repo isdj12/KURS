@@ -547,3 +547,58 @@
       background-color: transparent;
     }
   }
+
+  .so {
+    margin-left: 20px;  /* Add left margin */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background-color: #eaeaea;
+    color: #006089;
+    border: 1px solid #006089;
+    padding: 20px;
+    width: 200px;
+    transition: all 0.8s ease;
+      white-space: nowrap; /* Запрещаем перенос текста */
+  }
+
+  .so:hover {
+    background-color: #006089;
+    color: #ffeded;
+    border-color: #006089;
+  }
+
+#log{
+  height: 90px;
+  
+}
+
+.btn_btn-outline-success{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  background-color: #eaeaea;
+  color: #006089;
+  border: 1px solid #006089;
+  padding: 20px;
+  margin-left: 20px;  /* Add left margin */
+  width: 200px;
+  transition: all 0.8s ease;
+    white-space: nowrap; /* Запрещаем перенос текста */
+}
+
+.btn_btn-outline-success:hover{
+  background-color: #006089;
+  color: #ffeded;
+  border-color: #006089;
+}
+
+.form-control_me-2{
+  height: 50%;
+  position: relative;
+  margin-top: 5%;
+  padding: 2%;
+}
+

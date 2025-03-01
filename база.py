@@ -73,13 +73,13 @@ def karta1(id):
         flash('Номер не найден')
         return redirect(url_for('home'))
     #--------------------------------------
-@app.route('/Profile/<int:id>')
+@app.route('/Profile')
 def prof():
     user_id = request.args.get('id')  # Get the 'id' from the URL
     if user_id:
         try:
             user_id = int(user_id)
-            profile_acc = Database.query.get_or_404(user_id)  # Use user_id
+            profile_acc = acc.query.get_or_404(user_id)  # Use user_id
             items = [profile_acc]
             return render_template('profile.html', items=items, css_file=url_for('static', filename='profile.css'))
         except ValueError:
