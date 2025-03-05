@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Инди Игры - Профиль</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='Profile.css') }}">
+</head>
+<body>
+
+  <header>
+    <img src="" alt="indi-gog">
+    <p>Добро пожаловать в мир уникальных и захватывающих инди-игр!</p>
+  </header>
+
+  <main>
+    <section class="featured-game">
+      <div class="game-card">
+        {% if items %} <!-- Проверка на наличие данных -->
+          <img src="" alt="{{ items[0].ник }}"> <!--  Предполагается, что у вас есть поле 'ник' в модели acc -->
+          <h3>{{ items[0].ник }}</h3> <!--  Предполагается, что у вас есть поле 'ник' в модели acc -->
+          <p>{{ items[0].обо_мне }}</p> <!-- Предполагается, что у вас есть поле 'обо_мне' в модели acc -->
+        {% else %}
+          <p>Профиль не найден.</p>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="latest-games">
+      <h2>Новые Релизы</h2>
+      <div class="game-grid">
+        <div class="game-card">
+          <img src="" alt="Название Игры 1">
+          <h3>Название Игры 1</h3>
+          <p>Краткое описание первой игры.</p>
+          <a href="#" class="button">Подробнее</a>
+        </div>
+
+        <div class="game-card">
+          <img src="" alt="Название Игры 2">
+          <h3>Название Игры 2</h3>
+          <p>Краткое описание второй игры.</p>
+          <a href="#" class="button">Подробнее</a>
+        </div>
+
+        <div class="game-card">
+          <img src="" alt="Название Игры 3">
+          <h3>Название Игры 3</h3>
+          <p>Краткое описание третьей игры.</p>
+          <a href="#" class="button">Подробнее</a>
+        </div>
+
+        <!-- Добавьте больше карточек игр -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Инди Игры. Все права защищены.</p>
+  </footer>
+
+</body>
+</html>

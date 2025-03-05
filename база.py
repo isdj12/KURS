@@ -15,6 +15,7 @@ class Database(db.Model):
     teg2 = db.Column(db.String(50), nullable=True)
     teg3 = db.Column(db.String(50), nullable=True)
     image = db.Column(db.String(255), nullable=True)
+    user_id db.Column(db.int(255), nullable=False)
 
     def __init__(id, self, opis, name, teg1, teg2=None, teg3=None, image=None):
         self.id = id
@@ -24,6 +25,7 @@ class Database(db.Model):
         self.teg2 = teg2
         self.teg3 = teg3
         self.image = image
+        self.user_id = user_id
 
 
 with app.app_context():
@@ -41,6 +43,7 @@ def glavna():
         teg2 = request.form.get('teg2')
         teg3 = request.form.get('teg3')
         image = request.form.get('image')
+        user_id = request.form.get('user_id')
 
 
     # Обработка GET-запроса (отображение игр и фильтрация)
@@ -81,13 +84,16 @@ def prof():
             user_id = int(user_id)
             profile_acc = acc.query.get_or_404(user_id)  # Use user_id
             items = [profile_acc]
-            return render_template('profile.html', items=items, css_file=url_for('static', filename='profile.css'))
+            return render_template('Profile.html', items=items, css_file=url_for('static', filename='Profile.css'))
         except ValueError:
             flash('Invalid ID')
             return redirect(url_for('glavna')) 
     else:
         flash('No ID provided')
-        return redirect(url_for('glavna')) 
+      
+    
+    
+
 
 if __name__ == '__main__':
     app.run(debug=True)
