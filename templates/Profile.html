@@ -9,21 +9,22 @@
 <body>
 
   <header>
-    <img src="" alt="indi-gog">
+    <img src="{{ url_for('static', filename='Screenshot_6.png') }}" alt="indi-gog">
     <p>Добро пожаловать в мир уникальных и захватывающих инди-игр!</p>
   </header>
 
   <main>
     <section class="featured-game">
+      <h2>Профиль</h2>
+      {% if items %}
       <div class="game-card">
-        {% if items %} <!-- Проверка на наличие данных -->
-          <img src="" alt="{{ items[0].ник }}"> <!--  Предполагается, что у вас есть поле 'ник' в модели acc -->
-          <h3>{{ items[0].ник }}</h3> <!--  Предполагается, что у вас есть поле 'ник' в модели acc -->
-          <p>{{ items[0].обо_мне }}</p> <!-- Предполагается, что у вас есть поле 'обо_мне' в модели acc -->
-        {% else %}
-          <p>Профиль не найден.</p>
-        {% endif %}
+        <img src="https://avatars.githubusercontent.com/u/185120112?v=4" alt="{{ items[0].username }}">
+        <h3>{{ items[0].username }}</h3>
+        <p>{{ items[0].description }}</p>
       </div>
+      {% else %}
+      <p>Профиль не найден.</p>
+      {% endif %}
     </section>
 
     <section class="latest-games">
