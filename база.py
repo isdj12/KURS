@@ -88,8 +88,8 @@ def karta1(id):
         return redirect(url_for('glavna'))  # Исправлено: перенаправление на главную
 
 
-@app.route('/Profile/<int:user_id>') # Изменено: профиль берет значение из URL
-def prof(user_id): # Функция принимает user_id
+@app.route('/Profile/<int:user_id>') 
+def prof(user_id): 
     profile_Database = Database.query.get(user_id)
 
     if profile_Database:

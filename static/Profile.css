@@ -54,17 +54,24 @@ h2 {
 
 /* Кнопка */
 .button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  background-color: #eaeaea;
+  color: #006089;
+  border: 1px solid #006089;
+  padding: 20px;
+  margin-left: 35%;  /* Add left margin */
+  width: 200px;
+  transition: all 0.8s ease;
+    white-space: nowrap; /* Запрещаем перенос текста */
 }
 
 .button:hover {
-  background-color: #3e8e41;
+  background-color: #006089;
+  color: #ffeded;
+  border-color: #006089;
 }
 
 /* Жанры */
