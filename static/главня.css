@@ -62,12 +62,12 @@ body {
   background-color: white; /* Light Gray background */
 }
 
-
+.
 
 /* Navigation Bar */
 .navbar {
   background-color: #212529; /* Dark Blue */
-  height: 0px; /* Задайте высоту, если её ещё нет */
+  height: 15px; /* Задайте высоту, если её ещё нет */
 }
 
 .navbar-brand {
@@ -134,7 +134,7 @@ body {
   box-shadow: var(--shadow-light);
   z-index: 10;
   overflow-y: auto;
-  height: calc(100vh - 90px);
+  height: 100%;
 }
 
 #жанры form {
