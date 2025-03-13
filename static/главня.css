@@ -67,7 +67,6 @@ body {
 /* Navigation Bar */
 .navbar {
   background-color: #212529; /* Dark Blue */
-  height: 15px; /* Задайте высоту, если её ещё нет */
 }
 
 .navbar-brand {
