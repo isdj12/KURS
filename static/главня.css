@@ -45,7 +45,12 @@
   padding: 0;
 }
 
+
+
 body {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   border-style: none;
   position: relative;
   width: 100vw;
@@ -57,9 +62,12 @@ body {
   background-color: white; /* Light Gray background */
 }
 
+
+
 /* Navigation Bar */
 .navbar {
   background-color: #212529; /* Dark Blue */
+  height: 0px; /* Задайте высоту, если её ещё нет */
 }
 
 .navbar-brand {
@@ -116,7 +124,7 @@ body {
 
 /* Genre Section */
 #жанры {
-  position: absolute;
+  display: flex;
   top: 90px;
   left: 0;
   width: 200px;
@@ -182,12 +190,12 @@ body {
 /* Game Section */
 .game-indi {
   position: fixed; /* Фиксированное положение */
-  top: calc(550px + 150px);
+  top: calc(50% + 75px); /* 75px - высота навбара */
   left: calc(50px + 150px); /* Суммируем ширину `#жанры` и отступ*/
   transform: translateY(-50%);
   width: 75vw;
   max-width: 1200px;
-  height: max-content;
+  height: 70vh;
   background-color: white;
   border-radius: var(--radius-medium);
   box-shadow: var(--shadow-medium);
@@ -209,7 +217,7 @@ body {
   box-shadow: var(--shadow-light);
   overflow: hidden;
   transition: transform var(--transition-fast) ease, box-shadow var(--transition-fast) ease;
-  border: 1px solid black;
+  border: 1px;
   margin-bottom: 10px;
 }
 
