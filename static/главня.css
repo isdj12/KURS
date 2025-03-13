@@ -1,32 +1,254 @@
+:root {
+  /* Primary Colors */
+  --primary-color: #ffffff;
+  --secondary-color: #006089;
+  --accent-color: #f8f9fa;
+  --accent-color2: #212529;
+
+  /* Gradient Colors */
+  --gradient-start: #0077b6;
+  --gradient-end: #00b4d8;
+
+  /* State Colors */
+  --hover-color: #004c6d;
+  --active-color: #003757;
+
+  /* Shadows */
+  --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.15);
+
+  /* Animation Speed */
+  --transition-fast: 0.2s;
+  --transition-medium: 0.4s;
+  --transition-slow: 0.6s;
+
+  /* Border Radius */
+  --radius-small: 4px;
+  --radius-medium: 8px;
+  --radius-large: 16px;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+}
+
+/* Base Reset & Typography */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   border-style: none;
   position: relative;
   width: 100vw;
   height: 100vh;
-  font-family: Arial, sans-serif;
-  margin: 0; /* Убираем отступы по умолчанию */
-  overflow-x: hidden; /* Предотвращаем горизонтальную прокрутку */
+  font-family: 'Arial', sans-serif; /* Modern font */
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--accent-color2); /* Dark Gray text */
+  background-color: white; /* Light Gray background */
 }
 
+/* Navigation Bar */
+.navbar {
+  background-color: #212529; /* Dark Blue */
+}
 
-#inf {
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white !important; /* White text */
+  transition: transform var(--transition-fast) ease, box-shadow var(--transition-fast) ease;
+  border-radius: var(--radius-medium);
+  padding: 0.5rem 1rem;
+}
+
+.navbar-brand:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-nav .nav-link {
+  color: var(--primary-color) !important;
+  padding: 0.5rem 1rem;
+  transition: color var(--transition-fast) ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--accent-color);
+}
+
+/* Search Form */
+.form-control_me-2 {
+  margin-left: 10px;
+  border: none;
+  box-shadow: var(--shadow-light);
+}
+
+.btn_btn-outline-success {
+  margin-left: 10px;
+  border-color: var(--primary-color);
+  color: #006089;
+  transition: all var(--transition-fast) ease;
+}
+
+.btn_btn-outline-success:hover {
+  background-color: #006089;
+  color: #ffeded;
+  border-color: #006089;
+}
+
+/* Genre Section */
+#жанры {
+  position: absolute;
+  top: 90px;
+  left: 0;
+  width: 200px;
+  padding: var(--space-md);
+  background-color: var(--primary-color);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-light);
+  z-index: 10;
+  overflow-y: auto;
+  height: calc(100vh - 90px);
+}
+
+#жанры form {
   display: flex;
   flex-direction: column;
-  background-color: white;
-  color: black;
-  width: max-content;
-  padding: 1%;
+}
+
+.custom-checkbox {
   position: absolute;
-  top: 0;
-  left: 0;
+  z-index: -1;
+  opacity: 0;
 }
 
-.buttons-container {
+.custom-checkbox + label {
   display: flex;
-  gap: 1%;
+  align-items: center;
+  padding: 0.5rem 0;
+  cursor: pointer;
 }
 
+.custom-checkbox + label::before {
+  content: '';
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  border: 1px solid #adb5bd;
+  border-radius: var(--radius-small);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50% 50%;
+}
+
+.custom-checkbox:checked + label::before {
+  border-color: var(--secondary-color);
+  background-color: var(--secondary-color);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.btn-primary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  border-radius: var(--radius-medium);
+  color: var(--primary-color);
+  transition: all var(--transition-fast) ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
+}
+
+/* Game Section */
+.game-indi {
+  position: fixed; /* Фиксированное положение */
+  top: calc(550px + 150px);
+  left: calc(50px + 150px); /* Суммируем ширину `#жанры` и отступ*/
+  transform: translateY(-50%);
+  width: 75vw;
+  max-width: 1200px;
+  height: max-content;
+  background-color: white;
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-medium);
+  padding: var(--space-md);
+  overflow-y: auto;
+}
+
+.kart-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: var(--space-md);
+}
+
+.kart {
+  width: calc(50% - var(--space-md));
+  background-color: var(--accent-color);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-light);
+  overflow: hidden;
+  transition: transform var(--transition-fast) ease, box-shadow var(--transition-fast) ease;
+  border: 1px solid black;
+  margin-bottom: 10px;
+}
+
+.kart:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-medium);
+}
+
+.foto {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.opis {
+  padding: var(--space-sm);
+  text-align: left;
+}
+
+.opis h2 {
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+}
+
+.tegi_indi {
+  font-size: 0.8rem;
+  color: #777;
+  border: 1px solid black;
+  padding: 5px;
+  width: fit-content; /* Ширина по содержимому */
+  margin-bottom: 5px;
+}
+
+/* Detailed Button */
 .so {
+  margin-left: 20px;  /* Add left margin */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,7 +257,6 @@ body {
   color: #006089;
   border: 1px solid #006089;
   padding: 20px;
-  margin-left: 20px;  /* Add left margin */
   width: 200px;
   transition: all 0.8s ease;
     white-space: nowrap; /* Запрещаем перенос текста */
@@ -47,196 +268,18 @@ body {
   border-color: #006089;
 }
 
-#жанры {
-    top: 25%; /* Увеличено относительно высоты контейнера */
-  padding: 1%; /* Примерное значение */
-  margin-top: 2%; /* Уменьшено расстояние между инфо и жанрами */
-  height: 70%; /* Изменено для пропорциональности */
-  width: 10%; /* Примерное значение */
-  background-color: white;
-  border-bottom: 1px solid black !important;
-  border-top: 1px solid black !important;
-  border-right: 1px solid black !important;
-  position: absolute;
-  left: 0;
-  display: flex; /* Используем flexbox для вертикального выравнивания */
-  flex-direction: column; /* Элементы располагаются в колонку */
-  gap: 5px; /* Промежуток между элементами */
-}
-
-
-.custom-checkbox{
-    position: absolute;
-    z-index: -1;
-    opacity: 0;
-}
-.custom-checkbox+label {
-    display: inline-flex;
-    align-items: center;
-    user-select: none;
-  }
-  .custom-checkbox+label::before {
-    content: '';
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    flex-shrink: 0;
-    flex-grow: 0;
-    border: 1px solid #adb5bd;
-    border-radius: 0.25em;
-    margin-right: 0.5em;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 50% 50%;
-  }
-  .custom-checkbox:checked+label::before {
-    border-color: #0b76ef;
-    background-color: #0b76ef;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
-  }
-  /* стили при наведении курсора на checkbox */
-.custom-checkbox:not(:disabled):not(:checked)+label:hover::before {
-    border-color: #b3d7ff;
-  }
-  /* стили для активного состояния чекбокса (при нажатии на него) */
-  .custom-checkbox:not(:disabled):active+label::before {
-    background-color: #b3d7ff;
-    border-color: #b3d7ff;
-  }
-  /* стили для чекбокса, находящегося в фокусе */
-  .custom-checkbox:focus+label::before {
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
-  /* стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
-  .custom-checkbox:focus:not(:checked)+label::before {
-    border-color: #80bdff;
-  }
-  /* стили для чекбокса, находящегося в состоянии disabled */
-  .custom-checkbox:disabled+label::before {
-    background-color: #e9ecef;
+/* Responsive Design */
+@media (max-width: 768px) {
+  #жанры {
+      width: 150px;
   }
 
-.game-indi {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 80vh;  /*  Занимает 80% высоты видимой области */
-    width: 60vw; /* Занимает 80% ширины видимой области */
-    background-color: white;
-    border: 1px solid #80bdff;  /*  Одна общая рамка */
-    overflow-y: auto; /*  Добавляем вертикальную прокрутку */
-    padding: 20px; /* Добавляем отступы внутри */
-}
+  .game-indi {
+      width: 90vw;
+      padding: var(--space-sm);
+  }
 
-/*  Стили для контейнера карточек (чтобы карточки располагались в ряд) */
-.kart-container {
-    display: flex;
-    flex-wrap: wrap; /* Разрешаем перенос на новую строку */
-    gap: 20px; /* Расстояние между карточками */
-    justify-content: space-around; /* Равномерно распределяем пространство */
-
-}
-
-.kart {
-  display: flex; /* Используем flexbox */
-  flex-direction: row; /* Элементы в строку (по умолчанию)*/
-  width: 45%; /* Ширина карточки (примерно) */
-  background-color: white;
-  border: 1px solid black;
-  margin-bottom: 10px; /* Отступ снизу */
-}
-
-.foto {
-    width: 55%;
-    height: auto; /* Высота подстраивается автоматически */
-    object-fit: cover; /*  Обрезаем изображение, сохраняя пропорции */
-     border: 1px solid black;
-}
-
-.opis {
-  display: flex;
-  flex-direction: column;
-  margin-left: 5%;
-  flex-grow: 1; /*  Растягиваем блок описания */
-}
-
-.tegi_indi {
-    margin-top: auto;/* Прижимаем теги к низу */
-    border: 1px solid black;
-    padding: 5px;
-    width: fit-content; /* Ширина по содержимому */
-    margin-bottom: 5px;
-}
-
-#polzynok[type="range"] {
-    width: 100%; /*  Полная ширина */
-    margin-top: 10px;
-}
-/* Остальной код для ползунка остаётся таким же */
-#polzynok[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Убирает стандартный стиль */
-  appearance: none; /* Убирает стандартный стиль */
-  width: 15px; /* Ширина ползунка */
-  height: 15px; /* Высота ползунка */
-  background: #0b76ef; /* Цвет ползунка */
-  border-radius: 50%; /* Сделать ползунок круглым */
-  cursor: pointer; /* Указатель при наведении */
-}
-
-#polzynok[type="range"]::-moz-range-thumb {
-  width: 15px; /* Ширина ползунка */
-  height: 15px; /* Высота ползунка */
-  background: #0b76ef; /* Цвет ползунка */
-  border: none; /* Убирает рамку */
-  border-radius: 50%; /* Сделать ползунок круглым */
-  cursor: pointer; /* Указатель при наведении */
-}
-
-#polzynok[type="range"]::-ms-thumb {
-  width: 15px; /* Ширина ползунка */
-  height: 15px; /* Высота ползунка */
-  background: #0b76ef; /* Цвет ползунка */
-  border: none; /* Убирает рамку */
-  border-radius: 50%; /* Сделать ползунок круглым */
-  cursor: pointer; /* Указатель при наведении */
-}
-
-#тэги{
-  display: none;
-}
-
-.Button-label {
-  position: absolute;
-  left: 98%;
-  border-radius: 10px;
-  transition: transform var(--transition-medium) ease;
-}
-
-.btn_btn-outline-success{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  background-color: #eaeaea;
-  color: #006089;
-  border: 1px solid #006089;
-  padding: 20px;
-  margin-left: 20px;  /* Add left margin */
-  width: 200px;
-  transition: all 0.8s ease;
-    white-space: nowrap; /* Запрещаем перенос текста */
-}
-
-.btn_btn-outline-success:hover{
-  background-color: #006089;
-  color: #ffeded;
-  border-color: #006089;
-}
-
-.form-control_me-2{
-  height: 50%;
-  position: relative;
-  margin-top: 5%;
-  padding: 2%;
+  .kart {
+      width: 100%;
+  }
 }

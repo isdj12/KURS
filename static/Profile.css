@@ -1,3 +1,46 @@
+:root {
+
+  --primary-color: #ffffff;
+  --secondary-color: #006089;
+  --accent-color: #f8f9fa;
+  --accent-color2: #212529;
+
+
+  --gradient-start: #0077b6;
+  --gradient-end: #00b4d8;
+
+  /
+  --hover-color: #004c6d;
+  --active-color: #003757;
+
+
+  --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.15);
+
+
+  --transition-fast: 0.2s;
+  --transition-medium: 0.4s;
+  --transition-slow: 0.6s;
+
+
+  --radius-small: 4px;
+  --radius-medium: 8px;
+  --radius-large: 16px;
+
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: sans-serif;
   margin: 0;
@@ -7,7 +50,7 @@ body {
 }
 
 header {
-  background-color:#212529;
+  background-color: #212529;
   color: #fff;
   padding: 20px;
   text-align: center;
@@ -38,10 +81,16 @@ h2 {
 }
 
 .game-card img {
-  max-width: 100%;
+  max-width: 100%; /*  Занимает всю ширину контейнера */
   height: auto;
   border-radius: 5px;
   margin-bottom: 10px;
+  transition: transform 0.3s ease; /*  Плавный переход */
+  display: block; /* Убирает отступы снизу от inline элементов */
+}
+
+.game-card img:hover {
+  transform: translateY(-5px); /* Поднимаем изображение на 5px */
 }
 
 .game-card h3 {
@@ -65,7 +114,7 @@ h2 {
   margin-left: 35%;  /* Add left margin */
   width: 200px;
   transition: all 0.8s ease;
-    white-space: nowrap; /* Запрещаем перенос текста */
+  white-space: nowrap; /* Запрещаем перенос текста */
 }
 
 .button:hover {
@@ -112,4 +161,15 @@ footer {
   bottom: 0;       /* Прикрепить к низу страницы */
   left: 0;
   width: 100%; /* Занять всю ширину */
+}
+
+.navbar-brand {
+  border-radius: var(--radius-medium);
+  transition: transform 0.3s ease, box-shadow var(--transition-medium) ease; /*  Плавный переход */
+  display: inline-block; /* Чтобы transform работал */
+}
+
+.navbar-brand:hover {
+  transform: translateY(-3px); /* Поднимаем на 3 пикселя вверх */
+  box-shadow: var(--shadow-medium);
 }
