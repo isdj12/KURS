@@ -21,7 +21,20 @@
             </button>
             <div class="d-flex">
            
-              <a href="#" class="so">Кнопка 1</a>
+                <button class="so" id="openModalBtn">Регистрация</button>
+
+                <div id="soo" class="modal">
+                    <div class="modal-content" >
+                        <span class="close">&times;</span>    
+                        <label id="login"> login</login><br>
+                        <input type="text"> <br>
+                        <label id="pasword">pasword</login><br>
+                        <input type="text">  <br>
+                        <label id="pochta"> pochta</login> <br>
+                        <input type="text"> <br>
+                        <button>отправить</button>
+                    </div>
+                </div>
               <a href="#" class="so">Кнопка 2</a>
               <a href="#" class="so">Кнопка 3</a>
             </div>
@@ -98,7 +111,7 @@
             {% endfor %}
         </div>
     </div>
-
+<script src="{{ url_for('static', filename='главная.js') }}"></script>
   
 
 </body>

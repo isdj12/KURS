@@ -73,8 +73,10 @@ def glavna():
                     filtered_games.append(game)
                     break
         games = filtered_games
+        
 
-    return render_template('glavna.html', glavna=games, css_file=url_for('static', filename='главня.css'))
+
+    return render_template('glavna.html', glavna=games, js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
 
 
 @app.route('/karta1/<int:id>')
@@ -88,8 +90,8 @@ def karta1(id):
         return redirect(url_for('glavna'))  # Исправлено: перенаправление на главную
 
 
-@app.route('/Profile/<int:user_id>') 
-def prof(user_id): 
+@app.route('/Profile/<int:user_id>')
+def prof(user_id):
     profile_Database = Database.query.get(user_id)
 
     if profile_Database:
