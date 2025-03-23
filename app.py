@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, flash, session, request, render_template
+from flask import Flask, redirect, url_for, flash, session, request, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -71,9 +71,17 @@ def glavna():
                 return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
             
             # Проверяем, есть ли уже такой логин или email
-            existing_account = Account.query.filter((Account.login == login) | (Account.pochta == pochta)).first()
-            if existing_account:
-                flash("Username or Email Already Exists", 'error')
+            existing_login = Account.query.filter(Account.login == login).first()
+            existing_email = Account.query.filter(Account.pochta == pochta).first()
+            
+            if existing_login and existing_email:
+                flash("Пользователь с таким логином и email уже существует", 'error')
+                return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
+            elif existing_login:
+                flash("Пользователь с таким логином уже существует", 'error')
+                return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
+            elif existing_email:
+                flash("Пользователь с таким email уже существует", 'error')
                 return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
 
             # Создаем новый аккаунт
@@ -136,6 +144,25 @@ def prof(user_id):
     else:
         flash('Profile not found')
         return redirect(url_for('glavna'))
+
+@app.route('/check_availability', methods=['POST'])
+def check_availability():
+    """API для проверки доступности логина или email"""
+    data = request.get_json()
+    field_type = data.get('type')
+    value = data.get('value')
+    
+    if not field_type or not value:
+        return jsonify({'error': 'Неверные параметры запроса'}), 400
+    
+    if field_type == 'login':
+        existing = Account.query.filter(Account.login == value).first()
+    elif field_type == 'email':
+        existing = Account.query.filter(Account.pochta == value).first()
+    else:
+        return jsonify({'error': 'Неверный тип поля'}), 400
+    
+    return jsonify({'available': existing is None})
 
 if __name__ == '__main__':
     with app.app_context():
