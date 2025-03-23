@@ -54,14 +54,14 @@ def glavna():
         existing_account = Account.query.filter((Account.login == login) | (Account.pochta == pochta)).first()
         if existing_account:
             flash("Username or Email Already Exists", 'error')
-            return render_template('glavna.html')
+            return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
 
         new_account = Account(login=login, password=password, pochta=pochta)
         db.session.add(new_account)
         db.session.commit()
 
         flash('Account created successfully!', 'success')
-        return redirect(url_for('glavna'))
+        return render_template('glavna.html',  js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
 
     # Обработка GET-запроса (отображение игр и фильтрация)
     selected_genres = request.args.getlist('genre')
