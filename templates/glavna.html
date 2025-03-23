@@ -16,25 +16,25 @@
           
           <div style="display: flex; align-items: center; justify-content: space-between; height: 100%;">     
               <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" height="90px" >            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"aria-controls="navbarCollapse" aria-expanded="false" aria-label="Переключать навигацию">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="d-flex">
-           
-                <button class="so" id="openModalBtn">Регистрация</button>
+              <button class="so" id="openModalBtn">Регистрация</button>
 
-                <div id="soo" class="modal">
-                    <div class="modal-content" >
-                        <span class="close">&times;</span>    
-                        <label id="login"> login</login><br>
-                        <input type="text"> <br>
-                        <label id="pasword">pasword</login><br>
-                        <input type="text">  <br>
-                        <label id="pochta"> pochta</login> <br>
-                        <input type="text"> <br>
-                        <button>отправить</button>
-                    </div>
-                </div>
+              <div id="soo" class="modal">
+                  <div class="modal-content">
+                      <span class="close">&times;</span>
+                      <form method="POST">
+                          <label for="login">Login:</label><br>
+                          <input type="text" id="login" name="login" required><br>
+              
+                          <label for="password">Password:</label><br>
+                          <input type="password" id="password" name="password" required><br>
+              
+                          <label for="pochta">Email:</label><br>
+                          <input type="email" id="pochta" name="pochta" required><br>
+              
+                          <button class="submit-btn" type="submit">Отправить</button>
+                      </form>
+                  </div>
+              </div>        
               <a href="#" class="so">Кнопка 2</a>
               <a href="#" class="so">Кнопка 3</a>
             </div>

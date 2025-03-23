@@ -1,12 +1,28 @@
 from flask import Flask, redirect, url_for, flash, session, request, render_template
 from flask_sqlalchemy import SQLAlchemy
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SECRET_KEY'] = 'your_secret_key'  # ОБЯЗАТЕЛЬНО ЗАМЕНИТЕ на надежный секретный ключ!
+app.config['SECRET_KEY'] = 'your_secret_key'
+
 db = SQLAlchemy(app)
 
+class Account(db.Model):  
+    __tablename__ = 'account' 
+
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String(20), nullable=False, unique=True)  
+    password = db.Column(db.String(128), nullable=False)
+    pochta = db.Column(db.String(50), nullable=False, unique=True)  
+
+    def __init__(self, login, password, pochta):  
+        self.login = login
+        self.password = generate_password_hash(password)  
+        self.pochta = pochta
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 class Database(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,35 +44,23 @@ class Database(db.Model):
         self.user_id = user_id
 
 
-class acc(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-
-
-with app.app_context():
-    db.create_all()
-
-
 @app.route('/', methods=['GET', 'POST'])
 def glavna():
     if request.method == 'POST':
-        # Обработка формы добавления новой игры
-        opis = request.form.get('opis')
-        name = request.form.get('name')
-        teg1 = request.form.get('teg1')
-        teg2 = request.form.get('teg2')
-        teg3 = request.form.get('teg3')
-        image = request.form.get('image')
-        user_id = request.form.get('user_id')
+        login = request.form.get('login')
+        password = request.form.get('password')
+        pochta = request.form.get('pochta')
 
-        # Создаем новую игру
-        new_game = Database(opis=opis, name=name, teg1=teg1, teg2=teg2, teg3=teg3, image=image, user_id=user_id)
+        existing_account = Account.query.filter((Account.login == login) | (Account.pochta == pochta)).first()
+        if existing_account:
+            flash("Username or Email Already Exists", 'error')
+            return render_template('glavna.html')
 
-        # Добавляем игру в базу данных
-        db.session.add(new_game)
+        new_account = Account(login=login, password=password, pochta=pochta)
+        db.session.add(new_account)
         db.session.commit()
 
-        flash('Игра успешно добавлена!')
+        flash('Account created successfully!', 'success')
         return redirect(url_for('glavna'))
 
     # Обработка GET-запроса (отображение игр и фильтрация)
@@ -73,8 +77,6 @@ def glavna():
                     filtered_games.append(game)
                     break
         games = filtered_games
-        
-
 
     return render_template('glavna.html', glavna=games, js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
 
