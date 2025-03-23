@@ -1,10 +1,14 @@
 from flask import Flask, redirect, url_for, flash, session, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SECRET_KEY'] = 'your_secret_key'
+# Используем переменную окружения для секретного ключа или задаем случайное значение
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24).hex())
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
@@ -14,7 +18,8 @@ class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(20), nullable=False, unique=True)  
     password = db.Column(db.String(128), nullable=False)
-    pochta = db.Column(db.String(50), nullable=False, unique=True)  
+    pochta = db.Column(db.String(50), nullable=False, unique=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, login, password, pochta):  
         self.login = login
@@ -33,6 +38,7 @@ class Database(db.Model):
     teg3 = db.Column(db.String(50), nullable=True)
     image = db.Column(db.String(255), nullable=True)
     user_id = db.Column(db.Integer, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, opis, name, teg1, teg2=None, teg3=None, image=None, user_id=None):
         self.opis = opis
@@ -88,8 +94,8 @@ def karta1(id):
         items = [karta1_item]
         return render_template('karta1.html', items=items, css_file=url_for('static', filename='karta1.css'))
     else:
-        flash('Номер не найден')
-        return redirect(url_for('glavna'))  # Исправлено: перенаправление на главную
+        flash('Запись не найдена')
+        return redirect(url_for('glavna'))
 
 
 @app.route('/Profile/<int:user_id>')
@@ -106,4 +112,4 @@ def prof(user_id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

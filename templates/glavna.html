@@ -9,6 +9,19 @@
     <link rel="stylesheet" href="{{ css_file }}">
 </head>
 <body>
+    <!-- Flash сообщения -->
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid" style="height: 75px;  display: flex;
   flex-direction: row;
@@ -112,6 +125,55 @@
         </div>
     </div>
 <script src="{{ url_for('static', filename='главная.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработка модального окна
+    var modal = document.getElementById('soo');
+    var btn = document.getElementById('openModalBtn');
+    var span = document.getElementsByClassName('close')[0];
+    
+    if (btn) {
+        btn.onclick = function() {
+            modal.style.display = 'block';
+        }
+    }
+    
+    if (span) {
+        span.onclick = function() {
+            modal.style.display = 'none';
+        }
+    }
+    
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+    
+    // Отладка отправки формы
+    var form = document.querySelector('#soo form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            // Не предотвращаем отправку формы, просто логируем данные
+            console.log('Отправка формы регистрации');
+            console.log('Login:', form.login.value);
+            console.log('Password length:', form.password.value.length);
+            console.log('Email:', form.pochta.value);
+        });
+    }
+    
+    // Автоматически скрываем flash-сообщения через 5 секунд
+    var flashMessages = document.querySelectorAll('.flash-message');
+    flashMessages.forEach(function(message) {
+        setTimeout(function() {
+            message.style.opacity = '0';
+            setTimeout(function() {
+                message.style.display = 'none';
+            }, 1000); // Ждем завершения анимации
+        }, 5000);
+    });
+});
+</script>
   
 
 </body>
