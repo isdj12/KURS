@@ -1,0 +1,237 @@
+/* Основные цвета сайта */
+:root {
+    --primary-color: #2C3E50;    /* Тёмно-синий */
+    --secondary-color: #E74C3C;  /* Красный */
+    --accent-color: #3498DB;     /* Голубой */
+    --highlight-color: #F1C40F;  /* Жёлтый */
+    --neutral-color: #95A5A6;    /* Серый */
+}
+
+body {
+    background-color: var(--primary-color);
+    color: white;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Стили для навигации */
+.navbar {
+    background-color: var(--secondary-color) !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 75px;
+    z-index: 1000;
+}
+
+/* Стили для кнопок */
+.so {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.so:hover {
+    background-color: var(--highlight-color);
+    transform: scale(1.05);
+}
+
+/* Стили для карточек */
+.kart-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding-bottom: 20px; /* Добавляем отступ снизу для прокрутки */
+}
+
+.kart {
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--neutral-color);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.kart:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.foto {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.opis {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(44, 62, 80, 0.9);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.kart:hover .opis {
+    transform: translateY(0);
+}
+
+.tegi_indi {
+    color: var(--highlight-color);
+    font-size: 0.9em;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+/* Стили для жанров */
+#жанры {
+    position: fixed;
+    top: 75px;
+    left: 0;
+    right: 0;
+    background-color: var(--secondary-color);
+    z-index: 900;
+    padding: 15px;
+}
+
+#жанры form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    max-width: 1200px;
+    align-items: center;
+}
+
+.custom-checkbox {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.custom-checkbox + label {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--primary-color);
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.custom-checkbox:checked + label {
+    background-color: var(--accent-color);
+}
+
+.custom-checkbox + label:hover {
+    background-color: var(--highlight-color);
+}
+
+/* Сделаем сами чекбоксы более заметными */
+.custom-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Стиль для кнопки применения фильтров */
+.btn.btn-primary.mt-3 {
+    display: block;
+    width: 100%;
+    margin-top: 15px !important;
+    background-color: var(--accent-color);
+    border: none;
+    padding: 10px;
+}
+
+/* Стили для поиска */
+.d-flex.ml-auto {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.form-control_me-2 {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 200px;
+}
+
+.btn_btn-outline-success {
+    padding: 8px 16px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn_btn-outline-success:hover {
+    background-color: var(--highlight-color);
+}
+
+/* Стили для результатов поиска */
+.no-results {
+    width: 100%;
+    text-align: center;
+    padding: 50px 20px;
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.no-results h2 {
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.no-results p {
+    color: var(--neutral-color);
+}
+
+.game-indi {
+    position: fixed;
+    top: 140px; /* 75px (navbar) + 65px (жанры) */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    background-color: var(--primary-color);
+    padding: 20px;
+}
+
+/* Стили для скроллбара */
+.game-indi::-webkit-scrollbar {
+    width: 10px;
+}
+
+.game-indi::-webkit-scrollbar-track {
+    background: var(--primary-color);
+}
+
+.game-indi::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 5px;
+}
+
+.game-indi::-webkit-scrollbar-thumb:hover {
+    background: var(--highlight-color);
+} 

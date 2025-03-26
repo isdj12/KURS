@@ -45,8 +45,6 @@
   padding: 0;
 }
 
-
-
 body {
   display: flex;
   flex-direction: row;
@@ -54,7 +52,8 @@ body {
   border-style: none;
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: auto; /* Modified: Use auto to adjust height */
+  min-height: 100vh; /* Ensure the body takes at least the full screen height */
   font-family: 'Arial', sans-serif; /* Modern font */
   margin: 0;
   overflow-x: hidden;
@@ -212,22 +211,25 @@ input[type=text], input[type=password], input[type=email] {
 
 /* Genre Section */
 #жанры {
+  position: fixed;
   display: flex;
-  top: 90px;
+  top: 75px; /* Высота навбара */
   left: 0;
   width: 200px;
+  height: calc(100vh - 75px); /* Вычитаем высоту навбара */
   padding: var(--space-md);
   background-color: var(--primary-color);
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: var(--shadow-light);
   z-index: 10;
   overflow-y: auto;
-  height: 100%;
 }
 
 #жанры form {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  padding-bottom: var(--space-md);
 }
 
 .custom-checkbox {
@@ -275,27 +277,25 @@ input[type=text], input[type=password], input[type=email] {
   border-color: var(--hover-color);
 }
 
-/* Game Section */
 .game-indi {
-  position: fixed; /* Фиксированное положение */
-  top: calc(50% + 75px); /* 75px - высота навбара */
-  left: calc(50px + 150px); /* Суммируем ширину `#жанры` и отступ*/
-  transform: translateY(-50%);
-  width: 75vw;
-  max-width: 1200px;
-  height: 70vh;
-  background-color: white;
-  border-radius: var(--radius-medium);
-  box-shadow: var(--shadow-medium);
-  padding: var(--space-md);
+  position: fixed;
+  top: 75px; 
+  left: 200px; 
+  right: 0;
+  bottom: 0;
+  width: calc(80% - 200px); 
+  height: calc(100vh - 75px); 
   overflow-y: auto;
+  background-color: var(--primary-color);
+  z-index: 1;
 }
 
 .kart-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--space-md);
+  padding-bottom: var(--space-lg);
+  padding-top: 10px; 
 }
 
 .kart {
@@ -307,6 +307,7 @@ input[type=text], input[type=password], input[type=email] {
   transition: transform var(--transition-fast) ease, box-shadow var(--transition-fast) ease;
   border: 1px;
   margin-bottom: 10px;
+  margin-top: 10px; 
 }
 
 .kart:hover {
@@ -358,18 +359,20 @@ input[type=text], input[type=password], input[type=email] {
 }
 
 @media (max-width: 768px) {
-  #жанры {
-    width: 100%;
-    height: auto;
-  }
-  
   .game-indi {
     left: 0;
     width: 100%;
+    top: 140px; /* Высота навбара + высота жанров на мобильных */
+    height: calc(100vh - 140px);
   }
-  
-  .kart {
+
+  #жанры {
+    position: fixed;
+    top: 75px;
+    left: 0;
     width: 100%;
+    height: auto;
+    z-index: 2;
   }
 }
 
@@ -418,4 +421,50 @@ input[type=text], input[type=password], input[type=email] {
 @keyframes animatetop {
   from {top: -300px; opacity: 0}
   to {top: 0; opacity: 1}
+}
+
+.modal2 {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content2 {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: var(--radius-medium);
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+.modal2.show {
+  display: block;
+}
+
+/* Добавляем стили для скроллбара жанров */
+#жанры::-webkit-scrollbar {
+  width: 8px;
+}
+
+#жанры::-webkit-scrollbar-track {
+  background: var(--primary-color);
+}
+
+#жанры::-webkit-scrollbar-thumb {
+  background: var(--secondary-color);
+  border-radius: 4px;
+}
+
+#жанры::-webkit-scrollbar-thumb:hover {
+  background: var(--hover-color);
 }

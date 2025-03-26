@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{ css_file }}">
 </head>
 <body>
-    <!-- Flash сообщения -->
     <div class="flash-container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -21,7 +20,6 @@
             {% endif %}
         {% endwith %}
     </div>
-
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid" style="height: 75px;  display: flex;
   flex-direction: row;
@@ -48,12 +46,73 @@
                       </form>
                   </div>
               </div>        
-              <a href="#" class="so">Кнопка 2</a>
-              <a href="#" class="so">Кнопка 3</a>
+            <button class="so" id="openModalBtn2">Вход</button>
+            <div class="modal2"> 
+                <div class="modal-content2">
+                    <span class="close">&times;</span>
+                    <form method="POST" action="/add_game" enctype="multipart/form-data">
+                        <label for="name">Название игры:</label><br>
+                        <input type="text" id="name" name="name" required><br>
+
+                        <label for="opis">Описание:</label><br>
+                        <textarea id="opis" name="opis" required style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea><br>
+
+                        <label for="teg1">Тег 1:</label><br>
+                        <select id="teg1" name="teg1" required>
+                            <option value="Гонки">Гонки</option>
+                            <option value="Экшен">Экшен</option>
+                            <option value="Стратегии">Стратегии</option>
+                            <option value="Файтинг">Файтинг</option>
+                            <option value="Хоррор">Хоррор</option>
+                            <option value="Симулятор">Симулятор</option>
+                            <option value="Аркады">Аркады</option>
+                            <option value="Стелс">Стелс</option>
+                            <option value="Шутеры">Шутеры</option>
+                            <option value="RPG">RPG</option>
+                        </select><br>
+
+                        <label for="teg2">Тег 2:</label><br>
+                        <select id="teg2" name="teg2">
+                            <option value="">Не выбрано</option>
+                            <option value="Гонки">Гонки</option>
+                            <option value="Экшен">Экшен</option>
+                            <option value="Стратегии">Стратегии</option>
+                            <option value="Файтинг">Файтинг</option>
+                            <option value="Хоррор">Хоррор</option>
+                            <option value="Симулятор">Симулятор</option>
+                            <option value="Аркады">Аркады</option>
+                            <option value="Стелс">Стелс</option>
+                            <option value="Шутеры">Шутеры</option>
+                            <option value="RPG">RPG</option>
+                        </select><br>
+
+                        <label for="teg3">Тег 3:</label><br>
+                        <select id="teg3" name="teg3">
+                            <option value="">Не выбрано</option>
+                            <option value="Гонки">Гонки</option>
+                            <option value="Экшен">Экшен</option>
+                            <option value="Стратегии">Стратегии</option>
+                            <option value="Файтинг">Файтинг</option>
+                            <option value="Хоррор">Хоррор</option>
+                            <option value="Симулятор">Симулятор</option>
+                            <option value="Аркады">Аркады</option>
+                            <option value="Стелс">Стелс</option>
+                            <option value="Шутеры">Шутеры</option>
+                            <option value="RPG">RPG</option>
+                        </select><br>
+
+                        <label for="image">Изображение игры:</label><br>
+                        <input type="file" id="image" name="image" accept="image/*" required><br>
+
+                        <button class="submit-btn" type="submit">Добавить игру</button>
+                    </form>
+                </div>
             </div>
-            <form class="d-flex ml-auto" role="search">
-              <input class="form-control_me-2" type="search" placeholder="Поиск" aria-label="Поиск">
-              <button class="btn_btn-outline-success" type="submit">Поиск</button>
+            <a href="#" class="so">Кнопка 3</a>
+            </div>
+            <form class="d-flex ml-auto" role="search" action="/search" method="GET">
+                <input class="form-control_me-2" type="search" placeholder="Поиск" aria-label="Поиск" name="query" required>
+                <button class="btn_btn-outline-success" type="submit">Поиск</button>
             </form>
             <span class="Button-label"><img src="https://avatars.githubusercontent.com/u/185120112?v=4" alt="" size="32" height="50" width="50" data-view-component="true" class="avatar circle" ></span>
       </nav>
@@ -61,67 +120,75 @@
    <div id="жанры">
    
        <form action="/" method="GET">  
-            <input type="checkbox" class="custom-checkbox" id="happy1" name="genre" value="RPG">
-            <label for="happy1">RPG</label>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" class="custom-checkbox" id="rpg1" name="genre" value="RPG">
+                <label for="rpg1">RPG</label>
+            </div>
 
-            <input type="checkbox" class="custom-checkbox" id="happy2" name="genre" value="Шутеры">
-            <label for="happy2">Шутеры</label>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" class="custom-checkbox" id="shooter1" name="genre" value="Шутеры">
+                <label for="shooter1">Шутеры</label>
+            </div>
+            <input type="checkbox" class="custom-checkbox" id="racing" name="genre" value="Гонки">
+            <label for="racing">Гонки</label>
 
-            <input type="checkbox" class="custom-checkbox" id="happy3" name="genre" value="Гонки">
-            <label for="happy3">Гонки</label>
+            <input type="checkbox" class="custom-checkbox" id="action" name="genre" value="Экшен">
+            <label for="action">Экшен</label>
 
-            <input type="checkbox" class="custom-checkbox" id="happy4" name="genre" value="Экшен">
-            <label for="happy4">Экшен</label>
+            <input type="checkbox" class="custom-checkbox" id="strategy" name="genre" value="Стратегии">
+            <label for="strategy">Стратегии</label>
 
-            <input type="checkbox" class="custom-checkbox" id="happy5" name="genre" value="Стратегии">
-            <label for="happy5">Стратегии</label>
+            <input type="checkbox" class="custom-checkbox" id="fighting" name="genre" value="Файтинг">
+            <label for="fighting">Файтинг</label>
 
-            <input type="checkbox" class="custom-checkbox" id="happy6" name="genre" value="Файтинг">
-            <label for="happy6">Файтинг </label>
+            <input type="checkbox" class="custom-checkbox" id="horror" name="genre" value="Хоррор">
+            <label for="horror">Хоррор</label>
 
-            <input type="checkbox" class="custom-checkbox" id="happy7" name="genre" value="Хоррор">
-            <label for="happy7">Хоррор</label>
+            <input type="checkbox" class="custom-checkbox" id="simulator" name="genre" value="Симулятор">
+            <label for="simulator">Симулятор</label>
 
-            <input type="checkbox" class="custom-checkbox" id="happy8" name="genre" value="Симулятор">
-            <label for="happy8">Симулятор</label>
+            <input type="checkbox" class="custom-checkbox" id="arcade" name="genre" value="Аркады">
+            <label for="arcade">Аркады</label>
 
-            <input type="checkbox" class="custom-checkbox" id="happy9" name="genre" value="Аркады">
-            <label for="happy9">Аркады</label>
+            <input type="checkbox" class="custom-checkbox" id="stealth" name="genre" value="Стелс">
+            <label for="stealth">Стелс</label>
 
-            <input type="checkbox" class="custom-checkbox" id="happy10" name="genre" value="Стелс">
-            <label for="happy10">Стелс </label>
+            <input type="checkbox" class="custom-checkbox" id="tower" name="genre" value="товер дефенс">
+            <label for="tower">товер дефенс</label>
 
-            <input type="checkbox" class="custom-checkbox" id="happy11" name="genre" value="товер дефенс">
-            <label for="happy11">товер дефенс</label>
-
-                <!-- ... Ваши чекбоксы для жанров ... -->
-                <button type="submit" class="btn btn-primary mt-3">Применить фильтры</button>
+            <button type="submit" class="btn btn-primary mt-3">Применить фильтры</button>
         
        </form>
     </div>
 
     <div class="game-indi">
-     
-        <div class="kart-container">  <!--  Добавил контейнер для карточек -->
-            {% for item in glavna %}
-                <div class="kart">  <!--  Используем div для карточки -->
-                    {% if item.image %}
-                        <img src="{{ item.image }}" alt="{{ item.name }}" class="foto">
-                    {% else %}
-                        <img src="{{ url_for('static', filename='placeholder.png') }}" alt="Placeholder" class="foto">
-                        <!--  Добавьте placeholder.png в static -->
-                    {% endif %}
-                    <a class='so' href="http://127.0.0.1:5000/karta1/{{ item.id }}"> побробнее </a>
-                    <div class="opis">
-                        <h2>{{ item.name }}</h2>
-                        <p>{{ item.opis }}</p>
-                        <div class="tegi_indi">
-                        
-                           Теги: {{ item.teg1 }}{% if item.teg2 %}, {{ item.teg2 }}{% endif %}{% if item.teg3 %}, {{ item.teg3 }}{% endif %}
+        <div class="kart-container">
+            {% if glavna %}
+                {% for item in glavna %}
+                    <div class="kart">  <!--  Используем div для карточки -->
+                        {% if item.image %}
+                            <img src="{{ item.image }}" alt="{{ item.name }}" class="foto">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='placeholder.png') }}" alt="Placeholder" class="foto">
+                            <!--  Добавьте placeholder.png в static -->
+                        {% endif %}
+                        <a class='so' href="http://127.0.0.1:5000/karta1/{{ item.id }}"> побробнее </a>
+                        <div class="opis">
+                            <h2>{{ item.name }}</h2>
+                            <p>{{ item.opis }}</p>
+                            <div class="tegi_indi">
+                            
+                               Теги: {{ item.teg1 }}{% if item.teg2 %}, {{ item.teg2 }}{% endif %}{% if item.teg3 %}, {{ item.teg3 }}{% endif %}
+                            </div>
                         </div>
                     </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-results">
+                    <h2>По вашему запросу ничего не найдено</h2>
+                    <p>Попробуйте изменить параметры поиска</p>
                 </div>
-            {% endfor %}
+            {% endif %}
         </div>
     </div>
 <script src="{{ url_for('static', filename='главная.js') }}"></script>

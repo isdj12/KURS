@@ -4,6 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from datetime import datetime
 import traceback
+from werkzeug.utils import secure_filename
+import time
+from sqlalchemy import or_
 
 app = Flask(__name__)
 
@@ -17,6 +20,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 # Use environment variable for secret key or set a random value
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24).hex())
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Настройка для загрузки файлов
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
 
@@ -45,8 +54,10 @@ class Database(db.Model):
     teg3 = db.Column(db.String(50), nullable=True)
     image = db.Column(db.String(255), nullable=True)
     user_id = db.Column(db.Integer, nullable=True)
+    login = db.Column(db.String(20), nullable=False, default='admin')
+    password = db.Column(db.String(128), nullable=False, default='admin')
 
-    def __init__(self, opis, name, teg1, teg2=None, teg3=None, image=None, user_id=None):
+    def __init__(self, opis, name, teg1, teg2=None, teg3=None, image=None, user_id=None, login='admin', password='admin'):
         self.opis = opis
         self.name = name
         self.teg1 = teg1
@@ -54,7 +65,11 @@ class Database(db.Model):
         self.teg3 = teg3
         self.image = image
         self.user_id = user_id
+        self.login = login
+        self.password = generate_password_hash(password)
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET', 'POST'])
 def glavna():
@@ -163,6 +178,90 @@ def check_availability():
         return jsonify({'error': 'Неверный тип поля'}), 400
     
     return jsonify({'available': existing is None})
+
+@app.route('/add_game', methods=['POST'])
+def add_game():
+    try:
+        # Получаем данные из формы
+        name = request.form.get('name')
+        opis = request.form.get('opis')
+        teg1 = request.form.get('teg1')
+        teg2 = request.form.get('teg2')
+        teg3 = request.form.get('teg3')
+        
+        # Проверяем наличие файла
+        if 'image' not in request.files:
+            flash('Изображение не выбрано', 'error')
+            return redirect(url_for('glavna'))
+            
+        file = request.files['image']
+        if file.filename == '':
+            flash('Изображение не выбрано', 'error')
+            return redirect(url_for('glavna'))
+            
+        if file and allowed_file(file.filename):
+            # Сохраняем файл
+            filename = secure_filename(file.filename)
+            # Создаем уникальное имя файла
+            unique_filename = f"{int(time.time())}_{filename}"
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+            file.save(file_path)
+            
+            # Создаем запись в базе данных
+            new_game = Database(
+                name=name,
+                opis=opis,
+                teg1=teg1,
+                teg2=teg2 if teg2 else None,
+                teg3=teg3 if teg3 else None,
+                image=f"uploads/{unique_filename}",
+                login='admin',
+                password='admin'
+            )
+            
+            db.session.add(new_game)
+            db.session.commit()
+            
+            flash('Игра успешно добавлена!', 'success')
+        else:
+            flash('Неподдерживаемый формат файла', 'error')
+            
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Произошла ошибка при добавлении игры: {str(e)}', 'error')
+        
+    return redirect(url_for('glavna'))
+
+@app.route('/search')
+def search():
+    query = request.args.get('query', '').lower()
+    if not query:
+        return redirect('/')
+
+    # Если вы используете SQLAlchemy:
+    search_results = Database.query.filter(
+        or_(
+            Database.name.ilike(f'%{query}%'),
+            Database.opis.ilike(f'%{query}%'),
+            Database.teg1.ilike(f'%{query}%'),
+            Database.teg2.ilike(f'%{query}%'),
+            Database.teg3.ilike(f'%{query}%')
+        )
+    ).all()
+
+    # Если вы используете список/словарь:
+    # search_results = []
+    # for game in glavna:
+    #     if (query in game['name'].lower() or 
+    #         query in game['opis'].lower() or 
+    #         query in game['teg1'].lower() or 
+    #         (game['teg2'] and query in game['teg2'].lower()) or 
+    #         (game['teg3'] and query in game['teg3'].lower())):
+    #         search_results.append(game)
+
+    return render_template('glavna.html', 
+                         glavna=search_results,
+                         css_file=url_for('static', filename='styles.css'))
 
 if __name__ == '__main__':
     with app.app_context():

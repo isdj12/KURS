@@ -1,21 +1,36 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Получить модальное окно
+    
     var modal = document.getElementById("soo");
 
-    // Получить кнопку, которая открывает модальное окно
     var btn = document.getElementById("openModalBtn");
 
     var span = document.getElementsByClassName("close")[0];
 
-    if (btn) {
+    var modal2 = document.querySelector('.modal2');
+    var btn2 = document.getElementById("openModalBtn2");
+    var span2 = modal2 ? modal2.querySelector('.close') : null;
+
+    if (btn && modal) {
         btn.onclick = function() {
             modal.style.display = "block";
         }
     }
 
-    if (span) {
+    if (span && modal) {
         span.onclick = function() {
             modal.style.display = "none";
+        }
+    }
+
+    if (btn2 && modal2) {
+        btn2.onclick = function() {
+            modal2.classList.add('show');
+        }
+    }
+    
+    if (span2 && modal2) {
+        span2.onclick = function() {
+            modal2.classList.remove('show');
         }
     }
 
@@ -23,15 +38,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target == modal) {
             modal.style.display = "none";
         }
+        if (event.target == modal2) {
+            modal2.classList.remove('show');
+        }
     }
 
-    // Проверка доступности логина и email
     const loginInput = document.getElementById('login');
     const emailInput = document.getElementById('pochta');
     const loginFeedback = document.createElement('div');
-    const emailFeedback = document.createElement('div');
-    
-    // Добавляем элементы обратной связи после полей ввода
+    const emailFeedback = document.createElement('div');    
+   
     if (loginInput) {
         loginInput.insertAdjacentElement('afterend', loginFeedback);
         loginInput.addEventListener('blur', function() {
@@ -52,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Проверяем корректность email
         if (type === 'email' && !isValidEmail(value)) {
             feedbackElement.textContent = 'Некорректный email';
             feedbackElement.style.color = 'red';
