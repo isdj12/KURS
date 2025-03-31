@@ -54,6 +54,8 @@
     transition: background-color var(--transition-medium) ease;
   }
   
+
+
   h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     line-height: 1.2;
@@ -136,6 +138,14 @@
     transform: scale(1.05);
   }
   
+.ss{
+  background: transparent;
+  border: none !important;
+  font-size:0;
+  height: 100%;
+  width: 100%;
+}
+
   .placeholder {
     display: flex;
     align-items: center;

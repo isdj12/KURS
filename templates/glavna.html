@@ -26,7 +26,7 @@
   align-items: flex-start;">
           
           <div style="display: flex; align-items: center; justify-content: space-between; height: 100%;">     
-              <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" height="90px" >            
+              <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" height="70px" >            
               <button class="so" id="openModalBtn">Регистрация</button>
 
               <div id="soo" class="modal">
@@ -165,20 +165,18 @@
         <div class="kart-container">
             {% if glavna %}
                 {% for item in glavna %}
-                    <div class="kart">  <!--  Используем div для карточки -->
+                    <div class="kart">
                         {% if item.image %}
                             <img src="{{ item.image }}" alt="{{ item.name }}" class="foto">
                         {% else %}
                             <img src="{{ url_for('static', filename='placeholder.png') }}" alt="Placeholder" class="foto">
-                            <!--  Добавьте placeholder.png в static -->
                         {% endif %}
-                        <a class='so' href="http://127.0.0.1:5000/karta1/{{ item.id }}"> побробнее </a>
+                        <a class='ss' href="http://127.0.0.1:5000/karta1/{{ item.id }}"></a>
                         <div class="opis">
                             <h2>{{ item.name }}</h2>
                             <p>{{ item.opis }}</p>
                             <div class="tegi_indi">
-                            
-                               Теги: {{ item.teg1 }}{% if item.teg2 %}, {{ item.teg2 }}{% endif %}{% if item.teg3 %}, {{ item.teg3 }}{% endif %}
+                                Теги: {{ item.teg1 }}{% if item.teg2 %}, {{ item.teg2 }}{% endif %}{% if item.teg3 %}, {{ item.teg3 }}{% endif %}
                             </div>
                         </div>
                     </div>

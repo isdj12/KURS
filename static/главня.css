@@ -1,9 +1,12 @@
 :root {
   /* Primary Colors */
   --primary-color: #ffffff;
-  --secondary-color: #006089;
-  --accent-color: #f8f9fa;
-  --accent-color2: #212529;
+  --secondary-color: #2c3e50;
+  --accent-color: #3498db;
+  --accent-color2: #e74c3c;
+  --text-color: #2c3e50;
+  --background-light: #f8f9fa;
+  --background-dark: #2c3e50;
 
   /* Gradient Colors */
   --gradient-start: #0077b6;
@@ -14,9 +17,9 @@
   --active-color: #003757;
 
   /* Shadows */
-  --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.05);
-  --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.1);
-  --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.15);
+  --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.12);
+  --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.18);
 
   /* Animation Speed */
   --transition-fast: 0.2s;
@@ -64,11 +67,13 @@ body {
 
 /* Flash Messages */
 .flash-message {
-    padding: 10px;
+    padding: 15px 20px;
     margin: 10px 0;
-    border-radius: 5px;
+    border-radius: 10px;
     opacity: 1;
     transition: opacity 1s ease-in-out;
+    box-shadow: var(--shadow-light);
+    animation: fadeIn 0.5s ease;
 }
 
 .flash-success {
@@ -106,12 +111,16 @@ body {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: var(--primary-color);
     margin: 15% auto;
-    padding: 20px;
+    padding: 25px;
     border: 1px solid #888;
-    width: 300px;
-    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-strong);
+    animation-name: animatetop;
+    animation-duration: 0.4s;
 }
 
 .close {
@@ -142,19 +151,32 @@ body {
     background-color: #45a049;
 }
 
-input[type=text], input[type=password], input[type=email] {
+input[type=text], input[type=password], input[type=email], textarea, select {
     width: 100%;
-    padding: 6px 10px;
+    padding: 12px;
     margin: 4px 0 10px 0;
     display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    outline: none;
 }
 
 /* Navigation Bar */
 .navbar {
-  background-color: #212529; /* Dark Blue */
+  background-color: var(--background-dark);
+  box-shadow: var(--shadow-medium);
+  height: 75px;
+  display: flex;
+  align-items: center;
 }
 
 .navbar-brand {
@@ -193,20 +215,24 @@ input[type=text], input[type=password], input[type=email] {
 .form-control_me-2 {
   margin-left: 10px;
   border: none;
-  box-shadow: var(--shadow-light);
+  border-radius: 20px;
+  padding: 10px 20px;
+  background: var(--background-light);
+  transition: all 0.3s ease;
+}
+
+.form-control_me-2:focus {
+  box-shadow: var(--shadow-medium);
+  background: white;
 }
 
 .btn_btn-outline-success {
   margin-left: 10px;
-  border-color: var(--primary-color);
-  color: #006089;
-  transition: all var(--transition-fast) ease;
-}
-
-.btn_btn-outline-success:hover {
-  background-color: #006089;
-  color: #ffeded;
-  border-color: #006089;
+  border-radius: 20px;
+  padding: 10px 20px;
+  background: var(--accent-color);
+  color: white;
+  border: none;
 }
 
 /* Genre Section */
@@ -218,7 +244,7 @@ input[type=text], input[type=password], input[type=email] {
   width: 200px;
   height: calc(100vh - 75px); /* Вычитаем высоту навбара */
   padding: var(--space-md);
-  background-color: var(--primary-color);
+  background-color: var(--background-light);
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: var(--shadow-light);
   z-index: 10;
@@ -241,8 +267,13 @@ input[type=text], input[type=password], input[type=email] {
 .custom-checkbox + label {
   display: flex;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 12px 15px;
   cursor: pointer;
+  background: var(--primary-color);
+  border-radius: 8px;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-light);
 }
 
 .custom-checkbox + label::before {
@@ -259,9 +290,14 @@ input[type=text], input[type=password], input[type=email] {
 }
 
 .custom-checkbox:checked + label::before {
-  border-color: var(--secondary-color);
-  background-color: var(--secondary-color);
+  border-color: var(--accent-color);
+  background-color: var(--accent-color);
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.custom-checkbox:checked + label {
+  background: var(--accent-color);
+  color: white;
 }
 
 .btn-primary {
@@ -299,39 +335,48 @@ input[type=text], input[type=password], input[type=email] {
 }
 
 .kart {
-  width: calc(50% - var(--space-md));
-  background-color: var(--accent-color);
-  border-radius: var(--radius-medium);
+  position: relative;
+  background: var(--primary-color);
+  border-radius: 15px;
   box-shadow: var(--shadow-light);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  transition: transform var(--transition-fast) ease, box-shadow var(--transition-fast) ease;
-  border: 1px;
-  margin-bottom: 10px;
-  margin-top: 10px; 
+  margin: 10px 0;
 }
 
 .kart:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
   box-shadow: var(--shadow-medium);
 }
 
 .foto {
   width: 100%;
-  height: auto;
+  height: 200px;
   object-fit: cover;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.kart:hover .foto {
+  transform: scale(1.05);
 }
 
 .opis {
-  padding: var(--space-sm);
-  text-align: left;
+  padding: 20px;
+  background: var(--primary-color);
 }
 
 .opis h2 {
-  margin-top: 0;
-  margin-bottom: var(--space-sm);
-  font-size: 1.2rem;
-  color: var(--secondary-color);
+  color: var(--text-color);
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.opis p {
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-bottom: 15px;
 }
 
 .tegi_indi {
@@ -341,21 +386,33 @@ input[type=text], input[type=password], input[type=email] {
 }
 
 .so {
-  display: inline-block;
-  margin-top: var(--space-xs);
-  padding: 0.5rem 1rem;
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
-  text-decoration: none;
-  border-radius: var(--radius-small);
-  transition: background-color var(--transition-fast) ease;
-  text-align: center;
+  background: var(--accent-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .so:hover {
-  background-color: var(--hover-color);
-  color: var(--primary-color);
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-light);
+}
+
+.ss {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 10;
 }
 
 @media (max-width: 768px) {
@@ -364,6 +421,7 @@ input[type=text], input[type=password], input[type=email] {
     width: 100%;
     top: 140px; /* Высота навбара + высота жанров на мобильных */
     height: calc(100vh - 140px);
+    padding: 10px;
   }
 
   #жанры {
@@ -373,6 +431,14 @@ input[type=text], input[type=password], input[type=email] {
     width: 100%;
     height: auto;
     z-index: 2;
+  }
+
+  .kart-container {
+    grid-template-columns: 1fr;
+  }
+
+  .navbar {
+    padding: 10px;
   }
 }
 
@@ -467,4 +533,45 @@ input[type=text], input[type=password], input[type=email] {
 
 #жанры::-webkit-scrollbar-thumb:hover {
   background: var(--hover-color);
+}
+
+/* Анимации для элементов */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.kart {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Стили для сообщений */
+.flash-message {
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin: 10px 0;
+  box-shadow: var(--shadow-light);
+  animation: fadeIn 0.5s ease;
+}
+
+/* Улучшенные стили для поиска */
+.form-control_me-2 {
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  background: var(--background-light);
+  transition: all 0.3s ease;
+}
+
+.form-control_me-2:focus {
+  box-shadow: var(--shadow-medium);
+  background: white;
+}
+
+.btn_btn-outline-success {
+  border-radius: 20px;
+  padding: 10px 20px;
+  background: var(--accent-color);
+  color: white;
+  border: none;
 }
