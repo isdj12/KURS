@@ -148,14 +148,8 @@
    
        <form action="/" method="GET">  
             <div class="checkbox-wrapper">
-                <input type="checkbox" class="custom-checkbox" id="rpg1" name="genre" value="RPG">
-                <label for="rpg1">RPG</label>
             </div>
 
-            <div class="checkbox-wrapper">
-                <input type="checkbox" class="custom-checkbox" id="shooter1" name="genre" value="Шутеры">
-                <label for="shooter1">Шутеры</label>
-            </div>
             <input type="checkbox" class="custom-checkbox" id="racing" name="genre" value="Гонки">
             <label for="racing">Гонки</label>
 
@@ -261,14 +255,13 @@ document.addEventListener('DOMContentLoaded', function() {
             message.style.opacity = '0';
             setTimeout(function() {
                 message.style.display = 'none';
-            }, 1000); // Ждем завершения анимации
+            }, 1000); 
         }, 5000);
     });
 });
 </script>
   
 
-<!-- Добавляем модальное окно для входа -->
 <div id="loginModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeLoginModal()">&times;</span>
@@ -294,7 +287,7 @@ function closeLoginModal() {
     document.getElementById('loginModal').style.display = 'none';
 }
 
-// Закрытие модального окна при клике вне его
+
 window.onclick = function(event) {
     const modal = document.getElementById('loginModal');
     if (event.target == modal) {
@@ -303,19 +296,44 @@ window.onclick = function(event) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Обработка клика по аватарке
+  
     const loginButton = document.getElementById('loginButton');
     if (loginButton) {
         loginButton.addEventListener('click', openLoginModal);
     }
 
-    // Обработка клика по крестику
     const closeButtons = document.getElementsByClassName('close');
     Array.from(closeButtons).forEach(button => {
         button.addEventListener('click', closeLoginModal);
     });
 });
 </script>
+
+<div class="genres-container">
+    <div class="genre-card">
+        <div class="checkbox-wrapper">
+            <input type="checkbox" id="check1" class="custom-checkbox">
+            <label for="check1" class="check-box"></label>
+        </div>
+        <img src="{{ url_for('static', filename='images/action.jpg') }}" alt="Action">
+        <div class="genre-overlay">
+            <h3>Экшен</h3>
+            <p>Динамичные игры</p>
+        </div>
+    </div>
+
+    <div class="genre-card">
+        <div class="checkbox-wrapper">
+            <input type="checkbox" id="check2" class="custom-checkbox">
+            <label for="check2" class="check-box"></label>
+        </div>
+        <img src="{{ url_for('static', filename='images/rpg.jpg') }}" alt="RPG">
+        <div class="genre-overlay">
+            <h3>RPG</h3>
+            <p>Ролевые игры</p>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
