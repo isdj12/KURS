@@ -1,69 +1,25 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Инди Игры - Профиль</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='Profile.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-  <header>
-    <div>  
-      <a class="navbar-brand" href="{{ url_for('glavna') }}">      
-        <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" id="log" >
-      </a>      
-      </button>
-      <div>
-    <p>Добро пожаловать в мир уникальных и захватывающих инди-игр!</p>
-  </header>
+{% block title %}Профиль {{ user.username }}{% endblock %}
 
-  <main>
-    <section class="featured-game">
-      <h2>Профиль</h2>
-      {% if items %}
-      <div class="game-card">
-        <img src="https://avatars.githubusercontent.com/u/185120112?v=4" alt="{{ items[0].username }}">
-        <h3>{{ items[0].username }}</h3>
-        <p>{{ items[0].description }}</p>
-      </div>
-      {% else %}
-      <p>Профиль не найден.</p>
-      {% endif %}
-    </section>
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="https://avatars.githubusercontent.com/u/185120112?v=4" 
+             alt="Profile" 
+             class="profile-avatar">
+        <h1>{{ user.username }}</h1>
+    </div>
 
-    <section class="latest-games">
-      <h2>Новые Релизы</h2>
-      <div class="game-grid">
-        <div class="game-card">
-          <img src="" alt="Название Игры 1">
-          <h3>Название Игры 1</h3>
-          <p>Краткое описание первой игры.</p>
-          <a href="#" class="button">Подробнее</a>
+    <div class="profile-info">
+        <div class="info-section">
+            <h2>Информация профиля</h2>
+            <div class="info-item">
+                <span class="label">Email:</span>
+                <span class="value">{{ user.email }}</span>
+            </div>
+            <!-- Добавьте другие поля здесь -->
         </div>
-
-        <div class="game-card">
-          <img src="" alt="Название Игры 2">
-          <h3>Название Игры 2</h3>
-          <p>Краткое описание второй игры.</p>
-          <a href="#" class="button">Подробнее</a>
-        </div>
-
-        <div class="game-card">
-          <img src="" alt="Название Игры 3">
-          <h3>Название Игры 3</h3>
-          <p>Краткое описание третьей игры.</p>
-          <a href="#" class="button">Подробнее</a>
-        </div>
-
-        <!-- Добавьте больше карточек игр -->
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2023 Инди Игры. Все права защищены.</p>
-  </footer>
-
-</body>
-</html>
+    </div>
+</div>
+{% endblock %}

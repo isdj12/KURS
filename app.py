@@ -263,6 +263,105 @@ def search():
                          glavna=search_results,
                          css_file=url_for('static', filename='styles.css'))
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        login = request.form.get('login')
+        password = request.form.get('password')
+        email = request.form.get('pochta')
+
+        # Проверяем, существует ли пользователь
+        if Account.query.filter_by(login=login).first():
+            flash('Пользователь с таким логином уже существует', 'error')
+            return redirect(url_for('glavna'))
+
+        if Account.query.filter_by(pochta=email).first():
+            flash('Пользователь с таким email уже существует', 'error')
+            return redirect(url_for('glavna'))
+
+        try:
+            # Создаем нового пользователя
+            hashed_password = generate_password_hash(password)
+            new_user = Account(
+                login=login,
+                password=hashed_password,
+                pochta=email
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            
+            # Автоматически входим в аккаунт после регистрации
+            session['user_id'] = new_user.id
+            flash('Регистрация успешна!', 'success')
+            return redirect(url_for('glavna'))
+            
+        except Exception as e:
+            print(e)  # для отладки
+            db.session.rollback()
+            flash('Произошла ошибка при регистрации', 'error')
+            return redirect(url_for('glavna'))
+    
+    # Если GET запрос, перенаправляем на главную
+    return redirect(url_for('glavna'))
+
+@app.route('/login', methods=['POST'])
+def login():
+    login = request.form.get('login')
+    password = request.form.get('password')
+    
+    user = Account.query.filter_by(login=login).first()
+    
+    if user and check_password_hash(user.password, password):
+        session['user_id'] = user.id
+        session['user_logged_in'] = True
+        return redirect(url_for('profile', user_id=user.id))
+    else:
+        flash('Неверный логин или пароль')
+        return redirect(url_for('index'))
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    flash('Вы вышли из аккаунта', 'success')
+    return redirect(url_for('glavna'))
+
+@app.route('/profile/<int:user_id>')
+def profile(user_id):
+    # Получаем пользователя из базы данных
+    user = Account.query.get_or_404(user_id)
+    
+    # Проверяем, авторизован ли текущий пользователь
+    if 'user_id' not in session:
+        flash('Пожалуйста, войдите в систему')
+        return redirect(url_for('index'))
+    
+    # Получаем дополнительные данные пользователя (если есть)
+    user_data = {
+        'username': user.login,
+        'email': user.pochta,
+        # Добавьте другие поля, которые хотите отображать
+    }
+    
+    return render_template('profile.html', user=user_data)
+
+@app.route('/settings')
+def settings():
+    if 'user_id' not in session:
+        return redirect(url_for('glavna'))
+    
+    user = Account.query.get(session['user_id'])
+    if not user:
+        session.pop('user_id', None)
+        return redirect(url_for('glavna'))
+    
+    return render_template('settings.html', user=user)
+
+@app.route('/')
+def index():
+    # Проверяем, авторизован ли пользователь
+    user_logged_in = 'user_id' in session
+    return render_template('glavna.html', user_logged_in=user_logged_in)
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

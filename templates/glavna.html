@@ -1,3 +1,8 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="ru">  <!-- Изменил язык на русский -->
 <head>
@@ -5,25 +10,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <!-- Подключение CSS файла -->
+
     <link rel="stylesheet" href="{{ css_file }}">
 </head>
 <body>
-    <div class="flash-container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash-message flash-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message flash-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid" style="height: 75px;  display: flex;
   flex-direction: row;
-  align-items: flex-start;">
+  align-items: center;">
           
           <div style="display: flex; align-items: center; justify-content: space-between; height: 100%;">     
               <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" height="70px" >            
@@ -32,7 +35,7 @@
               <div id="soo" class="modal">
                   <div class="modal-content">
                       <span class="close">&times;</span>
-                      <form method="POST">
+                      <form method="POST" action="{{ url_for('register') }}">
                           <label for="login">Login:</label><br>
                           <input type="text" id="login" name="login" required><br>
               
@@ -42,7 +45,7 @@
                           <label for="pochta">Email:</label><br>
                           <input type="email" id="pochta" name="pochta" required><br>
               
-                          <button class="submit-btn" type="submit">Отправить</button>
+                          <button class="submit-btn" type="submit">Зарегистрироваться</button>
                       </form>
                   </div>
               </div>        
@@ -114,7 +117,31 @@
                 <input class="form-control_me-2" type="search" placeholder="Поиск" aria-label="Поиск" name="query" required>
                 <button class="btn_btn-outline-success" type="submit">Поиск</button>
             </form>
-            <span class="Button-label"><img src="https://avatars.githubusercontent.com/u/185120112?v=4" alt="" size="32" height="50" width="50" data-view-component="true" class="avatar circle" ></span>
+            <div class="profile-button">
+                {% if user_logged_in %}
+                    <div class="profile-link">
+                        <img src="https://avatars.githubusercontent.com/u/185120112?v=4" 
+                             alt="Profile" 
+                             class="avatar circle" 
+                             height="40" 
+                             width="40">
+                        <div class="profile-dropdown">
+                            <a href="{{ url_for('profile', user_id=session['user_id']) }}" class="dropdown-item">Мой профиль</a>
+                            <a href="/settings" class="dropdown-item">Настройки</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/logout" class="dropdown-item">Выйти</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <img src="https://avatars.githubusercontent.com/u/185120112?v=4" 
+                         alt="Login" 
+                         class="avatar circle" 
+                         id="loginButton" 
+                         height="40" 
+                         width="40"
+                         onclick="openLoginModal()">
+                {% endif %}
+            </div>
       </nav>
     
    <div id="жанры">
@@ -192,7 +219,7 @@
 <script src="{{ url_for('static', filename='главная.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Обработка модального окна
+
     var modal = document.getElementById('soo');
     var btn = document.getElementById('openModalBtn');
     var span = document.getElementsByClassName('close')[0];
@@ -215,11 +242,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Отладка отправки формы
+
     var form = document.querySelector('#soo form');
     if (form) {
         form.addEventListener('submit', function(e) {
-            // Не предотвращаем отправку формы, просто логируем данные
+       
             console.log('Отправка формы регистрации');
             console.log('Login:', form.login.value);
             console.log('Password length:', form.password.value.length);
@@ -227,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Автоматически скрываем flash-сообщения через 5 секунд
+
     var flashMessages = document.querySelectorAll('.flash-message');
     flashMessages.forEach(function(message) {
         setTimeout(function() {
@@ -241,5 +268,55 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
   
 
+<!-- Добавляем модальное окно для входа -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeLoginModal()">&times;</span>
+        <h2>Вход в аккаунт</h2>
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="login">Логин:</label>
+            <input type="text" id="login" name="login" required>
+
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button class="submit-btn" type="submit">Войти</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function openLoginModal() {
+    document.getElementById('loginModal').style.display = 'block';
+}
+
+function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+}
+
+// Закрытие модального окна при клике вне его
+window.onclick = function(event) {
+    const modal = document.getElementById('loginModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработка клика по аватарке
+    const loginButton = document.getElementById('loginButton');
+    if (loginButton) {
+        loginButton.addEventListener('click', openLoginModal);
+    }
+
+    // Обработка клика по крестику
+    const closeButtons = document.getElementsByClassName('close');
+    Array.from(closeButtons).forEach(button => {
+        button.addEventListener('click', closeLoginModal);
+    });
+});
+</script>
+
 </body>
 </html>
+{% endblock %}
