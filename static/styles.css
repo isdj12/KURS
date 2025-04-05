@@ -97,7 +97,7 @@ body {
 
 /* Стили для кнопок */
 .so, .btn-primary, .submit-btn {
-    background: var(--accent-color);
+    background: #3498db;
     color: white;
     padding: 10px 20px;
     border-radius: 8px;
@@ -710,4 +710,4 @@ document.addEventListener('DOMContentLoaded', function() {
     .genre-overlay p {
         font-size: 0.9rem;
     }
-} 
+}

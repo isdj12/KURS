@@ -7,6 +7,7 @@ import traceback
 from werkzeug.utils import secure_filename
 import time
 from sqlalchemy import or_
+from models import User, Database, db
 
 app = Flask(__name__)
 
@@ -16,7 +17,7 @@ if not os.path.exists(instance_path):
     os.makedirs(instance_path)
     print(f"Создана директория для базы данных: {instance_path}")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 # Use environment variable for secret key or set a random value
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24).hex())
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -27,7 +28,12 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-db = SQLAlchemy(app)
+# Инициализация базы данных
+db.init_app(app)
+
+# Создание таблиц
+with app.app_context():
+    db.create_all()
 
 class Account(db.Model):  
     __tablename__ = 'account' 
@@ -44,29 +50,6 @@ class Account(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
-
-class Database(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    opis = db.Column(db.String(1000), nullable=False)
-    name = db.Column(db.String(150), nullable=False)
-    teg1 = db.Column(db.String(50), nullable=False)
-    teg2 = db.Column(db.String(50), nullable=True)
-    teg3 = db.Column(db.String(50), nullable=True)
-    image = db.Column(db.String(255), nullable=True)
-    user_id = db.Column(db.Integer, nullable=True)
-    login = db.Column(db.String(20), nullable=False, default='admin')
-    password = db.Column(db.String(128), nullable=False, default='admin')
-
-    def __init__(self, opis, name, teg1, teg2=None, teg3=None, image=None, user_id=None, login='admin', password='admin'):
-        self.opis = opis
-        self.name = name
-        self.teg1 = teg1
-        self.teg2 = teg2
-        self.teg3 = teg3
-        self.image = image
-        self.user_id = user_id
-        self.login = login
-        self.password = generate_password_hash(password)
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -182,55 +165,46 @@ def check_availability():
 @app.route('/add_game', methods=['POST'])
 def add_game():
     try:
-        # Получаем данные из формы
         name = request.form.get('name')
         opis = request.form.get('opis')
         teg1 = request.form.get('teg1')
         teg2 = request.form.get('teg2')
         teg3 = request.form.get('teg3')
         
-        # Проверяем наличие файла
-        if 'image' not in request.files:
-            flash('Изображение не выбрано', 'error')
-            return redirect(url_for('glavna'))
-            
-        file = request.files['image']
-        if file.filename == '':
-            flash('Изображение не выбрано', 'error')
-            return redirect(url_for('glavna'))
-            
-        if file and allowed_file(file.filename):
-            # Сохраняем файл
-            filename = secure_filename(file.filename)
-            # Создаем уникальное имя файла
-            unique_filename = f"{int(time.time())}_{filename}"
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
-            file.save(file_path)
-            
-            # Создаем запись в базе данных
-            new_game = Database(
-                name=name,
-                opis=opis,
-                teg1=teg1,
-                teg2=teg2 if teg2 else None,
-                teg3=teg3 if teg3 else None,
-                image=f"uploads/{unique_filename}",
-                login='admin',
-                password='admin'
-            )
-            
-            db.session.add(new_game)
-            db.session.commit()
-            
-            flash('Игра успешно добавлена!', 'success')
+        # Обработка загруженного файла
+        if 'image' in request.files:
+            file = request.files['image']
+            if file.filename:
+                filename = secure_filename(file.filename)
+                file_path = os.path.join('uploads', filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            else:
+                file_path = None
         else:
-            flash('Неподдерживаемый формат файла', 'error')
-            
+            file_path = None
+
+        # Создаем новую игру
+        new_game = Database(
+            name=name,
+            opis=opis,
+            teg1=teg1,
+            teg2=teg2,
+            teg3=teg3,
+            image=file_path,
+            user_id=session.get('user_id'),
+            login=session.get('user_login')
+        )
+
+        db.session.add(new_game)
+        db.session.commit()
+
+        flash('Игра успешно добавлена!')
+        return redirect(url_for('index'))
+
     except Exception as e:
         db.session.rollback()
-        flash(f'Произошла ошибка при добавлении игры: {str(e)}', 'error')
-        
-    return redirect(url_for('glavna'))
+        flash(f'Ошибка при добавлении игры: {str(e)}')
+        return redirect(url_for('index'))
 
 @app.route('/search')
 def search():
@@ -248,17 +222,7 @@ def search():
             Database.teg3.ilike(f'%{query}%')
         )
     ).all()
-
-    # Если вы используете список/словарь:
-    # search_results = []
-    # for game in glavna:
-    #     if (query in game['name'].lower() or 
-    #         query in game['opis'].lower() or 
-    #         query in game['teg1'].lower() or 
-    #         (game['teg2'] and query in game['teg2'].lower()) or 
-    #         (game['teg3'] and query in game['teg3'].lower())):
-    #         search_results.append(game)
-
+    
     return render_template('glavna.html', 
                          glavna=search_results,
                          css_file=url_for('static', filename='styles.css'))
@@ -304,45 +268,36 @@ def register():
     # Если GET запрос, перенаправляем на главную
     return redirect(url_for('glavna'))
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    login = request.form.get('login')
-    password = request.form.get('password')
-    
-    user = Account.query.filter_by(login=login).first()
-    
-    if user and check_password_hash(user.password, password):
-        session['user_id'] = user.id
-        session['user_logged_in'] = True
-        return redirect(url_for('profile', user_id=user.id))
-    else:
-        flash('Неверный логин или пароль')
-        return redirect(url_for('index'))
+    if request.method == 'POST':
+        login = request.form.get('login')
+        password = request.form.get('password')
+        
+        user = Account.query.filter_by(login=login).first()
+        
+        if user and check_password_hash(user.password, password):
+            session['user_id'] = user.id
+            session['user_logged_in'] = True
+            return redirect(url_for('profile', user_id=user.id))
+        else:
+            flash('Неверный логин или пароль')
+            return redirect(url_for('index'))
+    return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
-    flash('Вы вышли из аккаунта', 'success')
-    return redirect(url_for('glavna'))
+    session.clear()
+    return redirect(url_for('index'))
 
 @app.route('/profile/<int:user_id>')
 def profile(user_id):
-    # Получаем пользователя из базы данных
-    user = Account.query.get_or_404(user_id)
-    
-    # Проверяем, авторизован ли текущий пользователь
     if 'user_id' not in session:
         flash('Пожалуйста, войдите в систему')
         return redirect(url_for('index'))
     
-    # Получаем дополнительные данные пользователя (если есть)
-    user_data = {
-        'username': user.login,
-        'email': user.pochta,
-        # Добавьте другие поля, которые хотите отображать
-    }
-    
-    return render_template('profile.html', user=user_data)
+    user = Account.query.get_or_404(user_id)
+    return render_template('profile.html', user=user, user_logged_in=True)
 
 @app.route('/settings')
 def settings():
@@ -358,12 +313,8 @@ def settings():
 
 @app.route('/')
 def index():
-    # Проверяем, авторизован ли пользователь
     user_logged_in = 'user_id' in session
     return render_template('glavna.html', user_logged_in=user_logged_in)
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-        print("База данных создана/обновлена")
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000))) 
