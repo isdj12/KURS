@@ -602,57 +602,277 @@
 
 
 
-.form-control_me-2 {
-    height: 50%;
-    position: relative;
-    margin-top: 5%;
-    padding: 2%;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    background: white;
-    transition: all 0.3s ease;
+.navbar {
+  /* Важно: Сделайте навбар flex-контейнером для контроля над дочерними элементами */
+  display: flex;
+  align-items: center; /* Центрируем элементы по вертикали */
+  justify-content: flex-start; /* Размещаем элементы слева направо */
+  position: fixed; /* оставляем fixed, если нужно */
+  width: 100%; /* на всю ширину экрана */
+  padding: 10px; /* Добавим немного отступов, чтобы контент не прижимался к краям */
 }
 
-.form-control_me-2:focus {
-    box-shadow: var(--shadow-medium);
-    background: white;
-}
-
-.btn_btn-outline-success {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    background-color: #eaeaea;
-    color: #006089;
-    border: 1px solid #006089;
-    padding: 10px 20px;
-    border-radius: 20px;
-    transition: all 0.8s ease;
-    white-space: nowrap;
-    margin-left: 1834px; 
-    width: 79px;
-}
-
-.btn_btn-outline-success:hover {
-    background-color: #006089;
-    color: #ffeded;
-    border-color: #006089;
+/* Убедитесь, что контейнер с кнопками занимает все доступное место */
+.container-fluid {
+display: flex;
+align-items: center;
+justify-content: space-between;
+width: 100%; /* Занимаем всю ширину */
 }
 
 .d-flex {
-    display: flex !important;
-    margin-left: auto; 
-    margin-right: 20px; 
-    align-items: center;
+  margin-left: auto; /* отталкиваем кнопки к правому краю */
+  margin-right: 20px; /* Добавим отступ справа */
 }
 
-.container-fluid {
-    height: 75px;
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* margin-left: auto;  Закомментировано: отталкиваем контейнер к правому краю */
+}
+
+.search-container {
+  display: flex; /* Делаем контейнер flexbox'ом */
+  align-items: center; /* Выравниваем элементы по вертикали */
+  gap: 8px; /* Добавляем отступ между полем и кнопкой */
+}
+
+.search-input {
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  margin-left: 0; /* Убираем фиксированный отступ */
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(0, 96, 137, 0.2);
+}
+
+.search-button {
+  height: 40px;
+  padding: 0 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0; /* Убираем фиксированный отступ */
+}
+
+.search-button:hover {
+  background-color: var(--hover-color);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-light);
+}
+
+.search-button:active {
+  transform: translateY(0);
+}
+
+.Button-label {
+  margin-left: 10px;  /* Добавляем отступ слева от аватарки */
+}
+
+.profile-button {
+  position: relative;
+  margin-left: -20px;
+}
+
+.avatar.circle {
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s;
+  border: 2px solid transparent;
+}
+
+.avatar.circle:hover {
+  transform: scale(1.1);
+  border-color: #006089;
+}
+
+.profile-link {
+  position: relative;
+}
+
+.profile-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  min-width: 200px;
+  margin-top: 10px;
+  z-index: 1000;
+}
+
+.profile-link:hover .profile-dropdown {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+  color: #006089;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 5px 0;
+}
+
+/* Стили для модального окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background:  rgba(0, 0, 0, 0.5) 100%;
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 25vh;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px; 
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: modalAppear 0.3s ease;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Стили формы */
+.modal h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #333;
+}
+
+/* Добавляем медиа-запрос для адаптивности */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+/* Стили для кнопки входа */
+.login-button {
+    background: transparent; /* Прозрачный фон */
+    border: none;
+    padding: 0;
+    cursor: pointer;
     display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: space-between; 
-    padding: 0 20px;
+    justify-content: center;
+}
+
+.login-button:focus {
+    outline: none;
+}
+
+.login-button:hover {
+    background: transparent; /* Прозрачный фон даже при наведении */
+}
+
+/* Если есть изображение внутри кнопки */
+.login-button img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
 }

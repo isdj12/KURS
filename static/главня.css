@@ -132,19 +132,6 @@
     text-decoration: none;
 }
 
-.submit-btn {
-    margin-top: 10px;
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.submit-btn:hover {
-    background-color: #45a049;
-}
 
 input[type=text], input[type=password], input[type=email], textarea, select {
     width: 100%;
@@ -551,11 +538,12 @@ select:focus {
 
 /* Улучшенные стили для поиска */
 .form-control_me-2 {
-  border: none;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid #ddd;
   border-radius: 20px;
-  padding: 10px 20px;
-  background: var(--background-light);
   transition: all 0.3s ease;
+  margin-left: 0;
 }
 
 .form-control_me-2:focus {

@@ -120,11 +120,7 @@
             <div class="profile-button">
                 {% if user_logged_in %}
                     <div class="profile-link">
-                        <img src="https://avatars.githubusercontent.com/u/185120112?v=4" 
-                             alt="Profile" 
-                             class="avatar circle" 
-                             height="40" 
-                             width="40">
+                        <img src="https://avatars.githubusercontent.com/u/185120112?v=4"  alt="Profile"  class="avatar circle"  height="40"  width="40">
                         <div class="profile-dropdown">
                             <a href="{{ url_for('profile', user_id=session['user_id']) }}" class="dropdown-item">Мой профиль</a>
                             <a href="/settings" class="dropdown-item">Настройки</a>
