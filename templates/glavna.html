@@ -23,6 +23,41 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+
+    <!-- Модальные окна -->
+    <div id="soo" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form method="POST" action="{{ url_for('register') }}">
+                <label for="reg-login">Login:</label><br>
+                <input type="text" id="reg-login" name="login" required><br>
+    
+                <label for="reg-password">Password:</label><br>
+                <input type="password" id="reg-password" name="password" required><br>
+    
+                <label for="pochta">Email:</label><br>
+                <input type="email" id="pochta" name="pochta" required><br>
+    
+                <button class="submit-btn" type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>        
+
+    <div id="loginModal" class="modal"> 
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form method="POST" action="{{ url_for('login') }}">
+                <label for="login-username">Логин:</label><br>
+                <input type="text" id="login-username" name="login" required><br>
+
+                <label for="login-password">Пароль:</label><br>
+                <input type="password" id="login-password" name="password" required><br>
+
+                <button class="submit-btn" type="submit">Войти</button>
+            </form>
+        </div>
+    </div>
+
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid" style="height: 75px;  display: flex;
   flex-direction: row;
@@ -31,87 +66,12 @@
           <div style="display: flex; align-items: center; justify-content: space-between; height: 100%;">     
               <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" height="70px" >            
               <button class="so" id="openModalBtn">Регистрация</button>
-
-              <div id="soo" class="modal">
-                  <div class="modal-content">
-                      <span class="close">&times;</span>
-                      <form method="POST" action="{{ url_for('register') }}">
-                          <label for="login">Login:</label><br>
-                          <input type="text" id="login" name="login" required><br>
-              
-                          <label for="password">Password:</label><br>
-                          <input type="password" id="password" name="password" required><br>
-              
-                          <label for="pochta">Email:</label><br>
-                          <input type="email" id="pochta" name="pochta" required><br>
-              
-                          <button class="submit-btn" type="submit">Зарегистрироваться</button>
-                      </form>
-                  </div>
-              </div>        
-            <button class="so" id="openModalBtn2">Вход</button>
-            <div class="modal2"> 
-                <div class="modal-content2">
-                    <span class="close">&times;</span>
-                    <form method="POST" action="/add_game" enctype="multipart/form-data">
-                        <label for="name">Название игры:</label><br>
-                        <input type="text" id="name" name="name" required><br>
-
-                        <label for="opis">Описание:</label><br>
-                        <textarea id="opis" name="opis" required style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea><br>
-
-                        <label for="teg1">Тег 1:</label><br>
-                        <select id="teg1" name="teg1" required>
-                            <option value="Гонки">Гонки</option>
-                            <option value="Экшен">Экшен</option>
-                            <option value="Стратегии">Стратегии</option>
-                            <option value="Файтинг">Файтинг</option>
-                            <option value="Хоррор">Хоррор</option>
-                            <option value="Симулятор">Симулятор</option>
-                            <option value="Аркады">Аркады</option>
-                            <option value="Стелс">Стелс</option>
-                            <option value="Шутеры">Шутеры</option>
-                            <option value="RPG">RPG</option>
-                        </select><br>
-
-                        <label for="teg2">Тег 2:</label><br>
-                        <select id="teg2" name="teg2">
-                            <option value="">Не выбрано</option>
-                            <option value="Гонки">Гонки</option>
-                            <option value="Экшен">Экшен</option>
-                            <option value="Стратегии">Стратегии</option>
-                            <option value="Файтинг">Файтинг</option>
-                            <option value="Хоррор">Хоррор</option>
-                            <option value="Симулятор">Симулятор</option>
-                            <option value="Аркады">Аркады</option>
-                            <option value="Стелс">Стелс</option>
-                            <option value="Шутеры">Шутеры</option>
-                            <option value="RPG">RPG</option>
-                        </select><br>
-
-                        <label for="teg3">Тег 3:</label><br>
-                        <select id="teg3" name="teg3">
-                            <option value="">Не выбрано</option>
-                            <option value="Гонки">Гонки</option>
-                            <option value="Экшен">Экшен</option>
-                            <option value="Стратегии">Стратегии</option>
-                            <option value="Файтинг">Файтинг</option>
-                            <option value="Хоррор">Хоррор</option>
-                            <option value="Симулятор">Симулятор</option>
-                            <option value="Аркады">Аркады</option>
-                            <option value="Стелс">Стелс</option>
-                            <option value="Шутеры">Шутеры</option>
-                            <option value="RPG">RPG</option>
-                        </select><br>
-
-                        <label for="image">Изображение игры:</label><br>
-                        <input type="file" id="image" name="image" accept="image/*" required><br>
-
-                        <button class="submit-btn" type="submit">Добавить игру</button>
-                    </form>
-                </div>
-            </div>
-            <a href="#" class="so">Кнопка 3</a>
+              <button class="so" id="openModalBtn2">Вход</button>
+              {% if user_logged_in %}
+              <button class="so" id="toggleAddGameForm">Добавить игру</button>
+              {% else %}
+              <button class="so" id="toggleAddGameForm" onclick="document.getElementById('loginModal').style.display='block'">Добавить игру</button>
+              {% endif %}
             </div>
             <form class="d-flex ml-auto" role="search" action="/search" method="GET">
                 <input class="form-control_me-2" type="search" placeholder="Поиск" aria-label="Поиск" name="query" required>
@@ -120,7 +80,9 @@
             <div class="profile-button">
                 {% if user_logged_in %}
                     <div class="profile-link">
-                        <img src="https://avatars.githubusercontent.com/u/185120112?v=4"  alt="Profile"  class="avatar circle"  height="40"  width="40">
+                        <a href="{{ url_for('profile', user_id=session['user_id']) }}">
+                            <img src="https://avatars.githubusercontent.com/u/185120112?v=4"  alt="Profile"  class="avatar circle"  height="40"  width="40">
+                        </a>
                         <div class="profile-dropdown">
                             <a href="{{ url_for('profile', user_id=session['user_id']) }}" class="dropdown-item">Мой профиль</a>
                             <a href="/settings" class="dropdown-item">Настройки</a>
@@ -134,8 +96,7 @@
                          class="avatar circle" 
                          id="loginButton" 
                          height="40" 
-                         width="40"
-                         onclick="openLoginModal()">
+                         width="40">
                 {% endif %}
             </div>
       </nav>
@@ -178,6 +139,68 @@
        </form>
     </div>
 
+    {% if user_logged_in %}
+    <div class="add-game-form" style="margin: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+        <h2>Добавить новую игру</h2>
+        <form method="POST" action="/add_game" enctype="multipart/form-data">
+            <label for="name">Название игры:</label><br>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="opis">Описание:</label><br>
+            <textarea id="opis" name="opis" required style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea><br>
+
+            <label for="teg1">Тег 1:</label><br>
+            <select id="teg1" name="teg1" required>
+                <option value="Гонки">Гонки</option>
+                <option value="Экшен">Экшен</option>
+                <option value="Стратегии">Стратегии</option>
+                <option value="Файтинг">Файтинг</option>
+                <option value="Хоррор">Хоррор</option>
+                <option value="Симулятор">Симулятор</option>
+                <option value="Аркады">Аркады</option>
+                <option value="Стелс">Стелс</option>
+                <option value="Шутеры">Шутеры</option>
+                <option value="RPG">RPG</option>
+            </select><br>
+
+            <label for="teg2">Тег 2:</label><br>
+            <select id="teg2" name="teg2">
+                <option value="">Не выбрано</option>
+                <option value="Гонки">Гонки</option>
+                <option value="Экшен">Экшен</option>
+                <option value="Стратегии">Стратегии</option>
+                <option value="Файтинг">Файтинг</option>
+                <option value="Хоррор">Хоррор</option>
+                <option value="Симулятор">Симулятор</option>
+                <option value="Аркады">Аркады</option>
+                <option value="Стелс">Стелс</option>
+                <option value="Шутеры">Шутеры</option>
+                <option value="RPG">RPG</option>
+            </select><br>
+
+            <label for="teg3">Тег 3:</label><br>
+            <select id="teg3" name="teg3">
+                <option value="">Не выбрано</option>
+                <option value="Гонки">Гонки</option>
+                <option value="Экшен">Экшен</option>
+                <option value="Стратегии">Стратегии</option>
+                <option value="Файтинг">Файтинг</option>
+                <option value="Хоррор">Хоррор</option>
+                <option value="Симулятор">Симулятор</option>
+                <option value="Аркады">Аркады</option>
+                <option value="Стелс">Стелс</option>
+                <option value="Шутеры">Шутеры</option>
+                <option value="RPG">RPG</option>
+            </select><br>
+
+            <label for="image">Изображение игры:</label><br>
+            <input type="file" id="image" name="image" accept="image/*" required><br>
+
+            <button class="submit-btn" type="submit">Добавить игру</button>
+        </form>
+    </div>
+    {% endif %}
+
     <div class="game-indi">
         <div class="kart-container">
             {% if glavna %}
@@ -209,7 +232,7 @@
 <script src="{{ url_for('static', filename='главная.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-
+    // Обработка модального окна регистрации
     var modal = document.getElementById('soo');
     var btn = document.getElementById('openModalBtn');
     var span = document.getElementsByClassName('close')[0];
@@ -217,33 +240,83 @@ document.addEventListener('DOMContentLoaded', function() {
     if (btn) {
         btn.onclick = function() {
             modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
     }
     
     if (span) {
         span.onclick = function() {
             modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+    
+    var modal2 = document.getElementById('loginModal');
+    var btn2 = document.getElementById('openModalBtn2');
+    var loginButton = document.getElementById('loginButton');
+    var span2 = document.getElementsByClassName('close')[1];
+    
+    if (btn2) {
+        btn2.onclick = function() {
+            modal2.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+    
+    if (loginButton) {
+        loginButton.onclick = function() {
+            modal2.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+    
+    if (span2) {
+        span2.onclick = function() {
+            modal2.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
     }
     
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        if (event.target == modal2) {
+            modal2.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        // Добавляем обработку клика вне формы добавления игры
+        if (addGameForm && addGameForm.classList.contains('show') && 
+            !addGameForm.contains(event.target) && 
+            event.target !== addGameBtn) {
+            addGameForm.classList.remove('show');
+            console.log('Form hidden by outside click');
         }
     }
-    
 
-    var form = document.querySelector('#soo form');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-       
-            console.log('Отправка формы регистрации');
-            console.log('Login:', form.login.value);
-            console.log('Password length:', form.password.value.length);
-            console.log('Email:', form.pochta.value);
-        });
-    }
+    // Обработка кнопки добавления игры
+    var addGameBtn = document.getElementById('toggleAddGameForm');
+    var addGameForm = document.querySelector('.add-game-form');
     
+    if (addGameBtn && addGameForm) {
+        console.log('Add game button and form found');
+        
+        addGameBtn.onclick = function(e) {
+            e.stopPropagation(); // Предотвращаем всплытие события
+            console.log('Add game button clicked');
+            if (addGameForm.classList.contains('show')) {
+                addGameForm.classList.remove('show');
+                console.log('Form hidden');
+            } else {
+                addGameForm.classList.add('show');
+                console.log('Form shown');
+                addGameForm.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    } else {
+        console.log('Add game elements not found:', {btn: !!addGameBtn, form: !!addGameForm});
+    }
 
     var flashMessages = document.querySelectorAll('.flash-message');
     flashMessages.forEach(function(message) {
@@ -256,60 +329,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-  
-
-<div id="loginModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeLoginModal()">&times;</span>
-        <h2>Вход в аккаунт</h2>
-        <form method="POST" action="{{ url_for('login') }}">
-            <label for="login">Логин:</label>
-            <input type="text" id="login" name="login" required>
-
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" name="password" required>
-
-            <button class="submit-btn" type="submit">Войти</button>
-        </form>
-    </div>
-</div>
-
-<script>
-function openLoginModal() {
-    document.getElementById('loginModal').style.display = 'block';
-}
-
-function closeLoginModal() {
-    document.getElementById('loginModal').style.display = 'none';
-}
-
-
-window.onclick = function(event) {
-    const modal = document.getElementById('loginModal');
-    if (event.target == modal) {
-        modal.style.display = 'none';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  
-    const loginButton = document.getElementById('loginButton');
-    if (loginButton) {
-        loginButton.addEventListener('click', openLoginModal);
-    }
-
-    const closeButtons = document.getElementsByClassName('close');
-    Array.from(closeButtons).forEach(button => {
-        button.addEventListener('click', closeLoginModal);
-    });
-});
-</script>
 
 <div class="genres-container">
     <div class="genre-card">
         <div class="checkbox-wrapper">
-            <input type="checkbox" id="check1" class="custom-checkbox">
-            <label for="check1" class="check-box"></label>
         </div>
         <img src="{{ url_for('static', filename='images/action.jpg') }}" alt="Action">
         <div class="genre-overlay">
@@ -320,8 +343,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <div class="genre-card">
         <div class="checkbox-wrapper">
-            <input type="checkbox" id="check2" class="custom-checkbox">
-            <label for="check2" class="check-box"></label>
         </div>
         <img src="{{ url_for('static', filename='images/rpg.jpg') }}" alt="RPG">
         <div class="genre-overlay">

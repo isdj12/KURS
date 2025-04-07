@@ -93,10 +93,10 @@
 }
 
 /* Modal Form Styles */
-#soo.modal {
+.modal {
     display: none;
     position: fixed;
-    z-index: 1050;
+    z-index: 9999;
     left: 0;
     top: 0;
     width: 100%;
@@ -106,16 +106,18 @@
 }
 
 .modal-content {
-    background-color: var(--primary-color);
+    background-color: #ffffff;
     margin: 15% auto;
     padding: 25px;
     border: 1px solid #888;
     width: 80%;
     max-width: 500px;
     border-radius: 15px;
-    box-shadow: var(--shadow-strong);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
     animation-name: animatetop;
     animation-duration: 0.4s;
+    position: relative;
+    z-index: 10000;
 }
 
 .close {
@@ -124,6 +126,9 @@
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 10px;
 }
 
 .close:hover,
@@ -132,24 +137,62 @@
     text-decoration: none;
 }
 
-
-input[type=text], input[type=password], input[type=email], textarea, select {
-    width: 100%;
-    padding: 12px;
-    margin: 4px 0 10px 0;
-    display: inline-block;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
+.modal.show {
+    display: block;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+.submit-btn {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #2980b9;
+}
+
+input[type=text], 
+input[type=password], 
+input[type=email] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input[type=text]:focus, 
+input[type=password]:focus, 
+input[type=email]:focus {
+    border-color: #3498db;
     outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+label {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 10px;
+    display: block;
+}
+
+.modal form {
+    margin-top: 20px;
 }
 
 /* Navigation Bar */
@@ -424,79 +467,77 @@ select:focus {
   }
 }
 
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 500px;
-  border-radius: var(--radius-medium);
-  animation-name: animatetop;
-  animation-duration: 0.4s;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.modal.show {
-  display: block;
-}
-
-@keyframes animatetop {
-  from {top: -300px; opacity: 0}
-  to {top: 0; opacity: 1}
-}
-
 .modal2 {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content2 {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 500px;
-  border-radius: var(--radius-medium);
-  animation-name: animatetop;
-  animation-duration: 0.4s;
+    background-color: var(--primary-color);
+    margin: 15% auto;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-strong);
+    animation-name: animatetop;
+    animation-duration: 0.4s;
 }
 
 .modal2.show {
-  display: block;
+    display: block;
+}
+
+.profile-button {
+    position: relative;
+    margin-left: 20px;
+}
+
+.profile-link {
+    position: relative;
+}
+
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--primary-color);
+    min-width: 160px;
+    box-shadow: var(--shadow-medium);
+    border-radius: 8px;
+    padding: 8px 0;
+    z-index: 1000;
+}
+
+.profile-link:hover .profile-dropdown {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 8px 16px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--background-light);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: rgba(0,0,0,0.1);
+    margin: 8px 0;
 }
 
 /* Добавляем стили для скроллбара жанров */
@@ -557,4 +598,134 @@ select:focus {
   background: var(--accent-color);
   color: white;
   border: none;
+}
+
+.profile-link a {
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-link a:hover {
+    opacity: 0.8;
+}
+
+.profile-link img {
+    display: block;
+    border-radius: 50%;
+    transition: opacity 0.3s ease;
+}
+
+.profile-link img:hover {
+    opacity: 0.8;
+}
+
+#loginButton {
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+#loginButton:hover {
+    opacity: 0.8;
+}
+
+.add-game-form {
+    display: none;
+    margin: 20px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+    animation: fadeIn 0.5s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    position: relative;
+    z-index: 100;
+}
+
+.add-game-form.show {
+    display: block !important;
+    margin-top: 100px; /* Добавляем отступ сверху */
+    margin-bottom: 50px; /* Добавляем отступ снизу */
+}
+
+.add-game-form h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.add-game-form label {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 15px;
+    display: block;
+}
+
+.add-game-form input[type="text"],
+.add-game-form textarea,
+.add-game-form select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+.add-game-form input[type="text"]:focus,
+.add-game-form textarea:focus,
+.add-game-form select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    background-color: #ffffff;
+}
+
+.add-game-form textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.add-game-form input[type="file"] {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px dashed #ccc;
+    width: 100%;
+}
+
+.add-game-form button[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.add-game-form button[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+@media (max-width: 768px) {
+    .add-game-form {
+        margin: 10px;
+        padding: 15px;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }

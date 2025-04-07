@@ -7,7 +7,7 @@ import traceback
 from werkzeug.utils import secure_filename
 import time
 from sqlalchemy import or_
-from models import User, Database, db
+from models import Account, Database, db
 
 app = Flask(__name__)
 
@@ -34,22 +34,7 @@ db.init_app(app)
 # Создание таблиц
 with app.app_context():
     db.create_all()
-
-class Account(db.Model):  
-    __tablename__ = 'account' 
-
-    id = db.Column(db.Integer, primary_key=True)
-    login = db.Column(db.String(20), nullable=False, unique=True)  
-    password = db.Column(db.String(128), nullable=False)
-    pochta = db.Column(db.String(50), nullable=False, unique=True)
-
-    def __init__(self, login, password, pochta):  
-        self.login = login
-        self.password = generate_password_hash(password)  
-        self.pochta = pochta
-
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
+    print("Таблицы базы данных созданы")
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -66,7 +51,10 @@ def glavna():
             
             if not login or not password or not pochta:
                 flash("Все поля должны быть заполнены", 'error')
-                return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
+                return render_template('glavna.html', 
+                                    js_file=url_for('static', filename='главная.js'), 
+                                    css_file=url_for('static', filename='главня.css'),
+                                    user_logged_in='user_id' in session)
             
             # Проверяем, есть ли уже такой логин или email
             existing_login = Account.query.filter(Account.login == login).first()
@@ -74,33 +62,47 @@ def glavna():
             
             if existing_login and existing_email:
                 flash("Пользователь с таким логином и email уже существует", 'error')
-                return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
+                return render_template('glavna.html', 
+                                    js_file=url_for('static', filename='главная.js'), 
+                                    css_file=url_for('static', filename='главня.css'),
+                                    user_logged_in='user_id' in session)
             elif existing_login:
                 flash("Пользователь с таким логином уже существует", 'error')
-                return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
+                return render_template('glavna.html', 
+                                    js_file=url_for('static', filename='главная.js'), 
+                                    css_file=url_for('static', filename='главня.css'),
+                                    user_logged_in='user_id' in session)
             elif existing_email:
                 flash("Пользователь с таким email уже существует", 'error')
-                return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
+                return render_template('glavna.html', 
+                                    js_file=url_for('static', filename='главная.js'), 
+                                    css_file=url_for('static', filename='главня.css'),
+                                    user_logged_in='user_id' in session)
 
-            # Создаем новый аккаунт
             new_account = Account(login=login, password=password, pochta=pochta)
             db.session.add(new_account)
             db.session.commit()
             print(f"Новый аккаунт создан: ID={new_account.id}")
 
-            flash('Account created successfully!', 'success')
-            return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
+            session['user_id'] = new_account.id
+            session['user_login'] = new_account.login
+            session['user_logged_in'] = True
+
+            flash('Аккаунт успешно создан! Вы автоматически вошли в систему.', 'success')
+            return redirect(url_for('glavna'))
         except Exception as e:
             db.session.rollback()
             print(f"Ошибка при создании аккаунта: {str(e)}")
             print(traceback.format_exc())
-            flash(f"Error: {str(e)}", 'error')
-            return render_template('glavna.html', js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
+            flash(f"Ошибка: {str(e)}", 'error')
+            return render_template('glavna.html', 
+                                js_file=url_for('static', filename='главная.js'), 
+                                css_file=url_for('static', filename='главня.css'),
+                                user_logged_in='user_id' in session)
 
     # Process GET request (display items and filter)
     selected_genres = request.args.getlist('genre')
 
-    # Получаем все записи из базы данных
     try:
         items = Database.query.all()
         print(f"Загружено {len(items)} записей из базы данных")
@@ -118,7 +120,11 @@ def glavna():
                     break
         items = filtered_items
 
-    return render_template('glavna.html', glavna=items, js_file=url_for('static', filename='главная.js'), css_file=url_for('static', filename='главня.css'))
+    return render_template('glavna.html', 
+                         glavna=items, 
+                         js_file=url_for('static', filename='главная.js'), 
+                         css_file=url_for('static', filename='главня.css'),
+                         user_logged_in='user_id' in session)
 
 
 @app.route('/karta1/<int:id>')
@@ -234,6 +240,8 @@ def register():
         password = request.form.get('password')
         email = request.form.get('pochta')
 
+        print(f"Попытка регистрации: login={login}, email={email}")  # Логирование для отладки
+
         # Проверяем, существует ли пользователь
         if Account.query.filter_by(login=login).first():
             flash('Пользователь с таким логином уже существует', 'error')
@@ -245,27 +253,30 @@ def register():
 
         try:
             # Создаем нового пользователя
-            hashed_password = generate_password_hash(password)
             new_user = Account(
                 login=login,
-                password=hashed_password,
+                password=password,  # Пароль будет хеширован в конструкторе Account
                 pochta=email
             )
             db.session.add(new_user)
             db.session.commit()
             
+            print(f"Новый пользователь создан: {new_user.login}")  # Логирование для отладки
+            
             # Автоматически входим в аккаунт после регистрации
             session['user_id'] = new_user.id
-            flash('Регистрация успешна!', 'success')
+            session['user_login'] = new_user.login
+            session['user_logged_in'] = True
+            
+            flash('Регистрация успешна! Вы автоматически вошли в систему.', 'success')
             return redirect(url_for('glavna'))
             
         except Exception as e:
-            print(e)  # для отладки
+            print(f"Ошибка при регистрации: {str(e)}")  # Логирование для отладки
             db.session.rollback()
             flash('Произошла ошибка при регистрации', 'error')
             return redirect(url_for('glavna'))
     
-    # Если GET запрос, перенаправляем на главную
     return redirect(url_for('glavna'))
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -274,16 +285,31 @@ def login():
         login = request.form.get('login')
         password = request.form.get('password')
         
+        print(f"Попытка входа: login={login}")  # Логирование для отладки
+        
         user = Account.query.filter_by(login=login).first()
         
-        if user and check_password_hash(user.password, password):
-            session['user_id'] = user.id
-            session['user_logged_in'] = True
-            return redirect(url_for('profile', user_id=user.id))
+        if user:
+            print(f"Пользователь найден: {user.login}")  # Логирование для отладки
+            print(f"Хеш пароля в БД: {user.password}")  # Логирование для отладки
+            if user.check_password(password):
+                print("Пароль верный")  # Логирование для отладки
+                session['user_id'] = user.id
+                session['user_login'] = user.login
+                session['user_logged_in'] = True
+                flash('Вы успешно вошли в систему!', 'success')
+                return redirect(url_for('glavna'))
+            else:
+                print("Неверный пароль")  # Логирование для отладки
+                print(f"Введенный пароль: {password}")  # Логирование для отладки
+                flash('Неверный пароль', 'error')
         else:
-            flash('Неверный логин или пароль')
-            return redirect(url_for('index'))
-    return redirect(url_for('index'))
+            print("Пользователь не найден")  # Логирование для отладки
+            flash('Пользователь с таким логином не найден', 'error')
+        
+        return redirect(url_for('glavna'))
+    
+    return redirect(url_for('glavna'))
 
 @app.route('/logout')
 def logout():
