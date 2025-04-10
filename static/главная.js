@@ -1,48 +1,84 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
-    var modal = document.getElementById("soo");
-
-    var btn = document.getElementById("openModalBtn");
-
-    var span = document.getElementsByClassName("close")[0];
-
-    var modal2 = document.querySelector('.modal2');
-    var btn2 = document.getElementById("openModalBtn2");
-    var span2 = modal2 ? modal2.querySelector('.close') : null;
-
-    if (btn && modal) {
-        btn.onclick = function() {
-            modal.style.display = "block";
+    // Делегирование событий для кнопок
+    document.addEventListener('click', function(e) {
+        const target = e.target;
+        
+        // Обработка кнопок открытия модальных окон
+        if (target.matches('[data-modal]') && !target.matches('.close')) {
+            const modalId = target.getAttribute('data-modal');
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+            e.preventDefault();
+            return;
         }
-    }
+        
+        // Обработка кнопок закрытия модальных окон
+        if (target.matches('.close')) {
+            const modalId = target.getAttribute('data-modal');
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            e.preventDefault();
+            return;
+        }
+        
+        // Обработка кнопки "Добавить игру"
+        if (target.matches('#toggleAddGameForm')) {
+            const action = target.getAttribute('data-action');
+            if (action === 'toggle-form') {
+                const form = document.querySelector('.add-game-form');
+                if (form) {
+                    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+                    if (form.style.display === 'block') {
+                        form.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            } else if (action === 'show-login') {
+                const loginModal = document.getElementById('loginModal');
+                if (loginModal) {
+                    loginModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            e.preventDefault();
+            return;
+        }
+        
+        // Обработка клика вне модальных окон
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(function(modal) {
+            if (target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Обработка клика вне формы добавления игры
+        const addGameForm = document.querySelector('.add-game-form');
+        if (addGameForm && addGameForm.style.display === 'block' && 
+            !addGameForm.contains(target) && 
+            !target.matches('#toggleAddGameForm')) {
+            addGameForm.style.display = 'none';
+        }
+    });
 
-    if (span && modal) {
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-    }
+    // Обработка flash-сообщений
+    const flashMessages = document.querySelectorAll('.flash-message');
+    flashMessages.forEach(function(message) {
+        setTimeout(function() {
+            message.style.opacity = '0';
+            setTimeout(function() {
+                message.style.display = 'none';
+            }, 1000); 
+        }, 5000);
+    });
 
-    if (btn2 && modal2) {
-        btn2.onclick = function() {
-            modal2.classList.add('show');
-        }
-    }
-    
-    if (span2 && modal2) {
-        span2.onclick = function() {
-            modal2.classList.remove('show');
-        }
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-        if (event.target == modal2) {
-            modal2.classList.remove('show');
-        }
-    }
-
+    // Проверка доступности логина и email
     const loginInput = document.getElementById('login');
     const emailInput = document.getElementById('pochta');
     const loginFeedback = document.createElement('div');

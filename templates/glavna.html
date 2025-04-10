@@ -24,9 +24,9 @@
         {% endif %}
     {% endwith %}
 
-    <div id="soo" class="modal">
+    <div id="soo" class="modal" data-modal="soo">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" data-modal="soo">&times;</span>
             <form method="POST" action="{{ url_for('register') }}">
                 <label for="reg-login">Login:</label><br>
                 <input type="text" id="reg-login" name="login" required><br>
@@ -42,9 +42,9 @@
         </div>
     </div>        
 
-    <div id="loginModal" class="modal"> 
+    <div id="loginModal" class="modal" data-modal="loginModal"> 
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" data-modal="loginModal">&times;</span>
             <form method="POST" action="{{ url_for('login') }}">
                 <label for="login-username">Логин:</label><br>
                 <input type="text" id="login-username" name="login" required><br>
@@ -64,12 +64,12 @@
           
           <div style="display: flex; align-items: center; justify-content: space-between; height: 100%;">     
               <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" height="70px" >            
-              <button class="so" id="openModalBtn">Регистрация</button>
-              <button class="so" id="openModalBtn2">Вход</button>
+              <button class="so" id="openModalBtn" data-modal="soo">Регистрация</button>
+              <button class="so" id="openModalBtn2" data-modal="loginModal">Вход</button>
               {% if user_logged_in %}
-              <button class="so" id="toggleAddGameForm">Добавить игру</button>
+              <button class="so" id="toggleAddGameForm" data-action="toggle-form">Добавить игру</button>
               {% else %}
-              <button class="so" id="toggleAddGameForm" onclick="document.getElementById('loginModal').style.display='block'">Добавить игру</button>
+              <button class="so" id="toggleAddGameForm" data-action="show-login">Добавить игру</button>
               {% endif %}
             </div>
             <form class="d-flex ml-auto" role="search" action="/search" method="GET">
@@ -138,8 +138,7 @@
        </form>
     </div>
 
-    {% if user_logged_in %}
-    <div class="add-game-form" style="margin: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+    <div class="add-game-form" style="display: none; margin: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
         <h2>Добавить новую игру</h2>
         <form method="POST" action="/add_game" enctype="multipart/form-data">
             <label for="name">Название игры:</label><br>
@@ -198,7 +197,6 @@
             <button class="submit-btn" type="submit">Добавить игру</button>
         </form>
     </div>
-    {% endif %}
 
     <div class="game-indi">
         <div class="kart-container">
@@ -206,7 +204,7 @@
                 {% for item in glavna %}
                     <div class="kart">
                         {% if item.image %}
-                            <img src="{{ item.image }}" alt="{{ item.name }}" class="foto">
+                            <img src="{{ url_for('static', filename='uploads/' + item.image) }}" alt="{{ item.name }}" class="foto">
                         {% else %}
                             <img src="{{ url_for('static', filename='placeholder.png') }}" alt="Placeholder" class="foto">
                         {% endif %}
@@ -229,128 +227,6 @@
         </div>
     </div>
 <script src="{{ url_for('static', filename='главная.js') }}"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Обработка модального окна регистрации
-    var modal = document.getElementById('soo');
-    var btn = document.getElementById('openModalBtn');
-    var span = document.getElementsByClassName('close')[0];
-    
-    if (btn) {
-        btn.onclick = function() {
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-    }
-    
-    if (span) {
-        span.onclick = function() {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    }
-    
-    var modal2 = document.getElementById('loginModal');
-    var btn2 = document.getElementById('openModalBtn2');
-    var loginButton = document.getElementById('loginButton');
-    var span2 = document.getElementsByClassName('close')[1];
-    
-    if (btn2) {
-        btn2.onclick = function() {
-            modal2.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-    }
-    
-    if (loginButton) {
-        loginButton.onclick = function() {
-            modal2.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-    }
-    
-    if (span2) {
-        span2.onclick = function() {
-            modal2.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    }
-    
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        if (event.target == modal2) {
-            modal2.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        // Добавляем обработку клика вне формы добавления игры
-        if (addGameForm && addGameForm.classList.contains('show') && 
-            !addGameForm.contains(event.target) && 
-            event.target !== addGameBtn) {
-            addGameForm.classList.remove('show');
-            console.log('Form hidden by outside click');
-        }
-    }
-
-    // Обработка кнопки добавления игры
-    var addGameBtn = document.getElementById('toggleAddGameForm');
-    var addGameForm = document.querySelector('.add-game-form');
-    
-    if (addGameBtn && addGameForm) {
-        console.log('Add game button and form found');
-        
-        addGameBtn.onclick = function(e) {
-            e.stopPropagation(); // Предотвращаем всплытие события
-            console.log('Add game button clicked');
-            if (addGameForm.classList.contains('show')) {
-                addGameForm.classList.remove('show');
-                console.log('Form hidden');
-            } else {
-                addGameForm.classList.add('show');
-                console.log('Form shown');
-                addGameForm.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    } else {
-        console.log('Add game elements not found:', {btn: !!addGameBtn, form: !!addGameForm});
-    }
-
-    var flashMessages = document.querySelectorAll('.flash-message');
-    flashMessages.forEach(function(message) {
-        setTimeout(function() {
-            message.style.opacity = '0';
-            setTimeout(function() {
-                message.style.display = 'none';
-            }, 1000); 
-        }, 5000);
-    });
-});
-</script>
-
-<div class="genres-container">
-    <div class="genre-card">
-        <div class="checkbox-wrapper">
-        </div>
-        <img src="{{ url_for('static', filename='images/action.jpg') }}" alt="Action">
-        <div class="genre-overlay">
-            <h3>Экшен</h3>
-            <p>Динамичные игры</p>
-        </div>
-    </div>
-
-    <div class="genre-card">
-        <div class="checkbox-wrapper">
-        </div>
-        <img src="{{ url_for('static', filename='images/rpg.jpg') }}" alt="RPG">
-        <div class="genre-overlay">
-            <h3>RPG</h3>
-            <p>Ролевые игры</p>
-        </div>
-    </div>
-</div>
-
 </body>
 </html>
 {% endblock %}
