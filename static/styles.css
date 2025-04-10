@@ -554,6 +554,7 @@ document.addEventListener('DOMContentLoaded', function() {
 .profile-header {
     display: flex;
     align-items: center;
+    margin-top: 100px;
     gap: 2rem;
     padding: 2rem;
     background: white;

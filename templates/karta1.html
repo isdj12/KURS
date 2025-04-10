@@ -22,7 +22,6 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="d-flex">
-
                 <a href="#" class="so">Кнопка 1</a>
                 <a href="#" class="so">Кнопка 2</a>
                 <a href="#" class="so">Кнопка 3</a>
@@ -65,15 +64,27 @@
     <div class="info" style="margin-top: 70px">
         <div class="room-detail">
             <div class="room-gallery">
-                <img src="" alt="Изображение 1" width="700px">
-                <img src="" alt="Изображение 2" width="700px">
-                <img src="" alt="Изображение 3" width="700px">
+                {% for item in items %}
+                    {% if item.image %}
+                        <img src="/static/{{ item.image }}" 
+                             alt="{{ item.name }}" 
+                             width="700px"
+                             onerror="this.onerror=null; this.src='{{ url_for('static', filename='placeholder.png') }}';">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='placeholder.png') }}" 
+                             alt="Placeholder" 
+                             width="700px">
+                    {% endif %}
+                {% endfor %}
             </div>
 
             <div class="room-info">
                 {% for item in items %}
                      <h1>{{ item.name }}</h1>  
                      <p><strong>{{ item.opis }}</strong></p> 
+                     <div class="tegi_indi">
+                        Теги: {{ item.teg1 }}{% if item.teg2 %}, {{ item.teg2 }}{% endif %}{% if item.teg3 %}, {{ item.teg3 }}{% endif %}
+                     </div>
                     <form method="POST">
                         <input type="submit" value="Загрузить игру" class="indi_download">
                     </form>
@@ -103,7 +114,6 @@
     </div>
 </div>
 
-<!-- Добавляем JavaScript для работы модального окна -->
 <script>
 function openLoginModal() {
     document.getElementById('loginModal').style.display = 'block';

@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, flash, session, request, render_template, jsonify
+from flask import Flask, redirect, url_for, flash, session, request, render_template, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -23,10 +23,13 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24).hex())
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Настройка для загрузки файлов
-UPLOAD_FOLDER = 'static/uploads'
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Создаем директорию для загрузки файлов, если она не существует
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Инициализация базы данных
 db.init_app(app)
@@ -178,16 +181,27 @@ def add_game():
         teg3 = request.form.get('teg3')
         
         # Обработка загруженного файла
+        file_path = None
         if 'image' in request.files:
             file = request.files['image']
-            if file.filename:
-                filename = secure_filename(file.filename)
-                file_path = os.path.join('uploads', filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            else:
-                file_path = None
-        else:
-            file_path = None
+            if file and file.filename:
+                if not allowed_file(file.filename):
+                    flash('Недопустимый формат файла. Разрешены только: png, jpg, jpeg, gif', 'error')
+                    return redirect(url_for('glavna'))
+                
+                # Генерируем уникальное имя файла
+                timestamp = int(time.time())
+                filename = f"{timestamp}_{secure_filename(file.filename)}"
+                
+                # Создаем директорию, если она не существует
+                os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+                
+                # Сохраняем файл
+                file_path = filename  # Сохраняем только имя файла
+                full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(full_path)
+                
+                print(f"Файл сохранен: {file_path}")  # Отладочное сообщение
 
         # Создаем новую игру
         new_game = Database(
@@ -203,14 +217,17 @@ def add_game():
 
         db.session.add(new_game)
         db.session.commit()
+        print(f"Игра добавлена: {new_game.name}, изображение: {new_game.image}")  # Отладочное сообщение
 
         flash('Игра успешно добавлена!')
-        return redirect(url_for('index'))
+        return redirect(url_for('glavna'))
 
     except Exception as e:
         db.session.rollback()
+        print(f"Ошибка при добавлении игры: {str(e)}")  # Отладочное сообщение
+        print(traceback.format_exc())
         flash(f'Ошибка при добавлении игры: {str(e)}')
-        return redirect(url_for('index'))
+        return redirect(url_for('glavna'))
 
 @app.route('/search')
 def search():
@@ -341,6 +358,10 @@ def settings():
 def index():
     user_logged_in = 'user_id' in session
     return render_template('glavna.html', user_logged_in=user_logged_in)
+
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000))) 
