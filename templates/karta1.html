@@ -17,29 +17,6 @@
                 <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" height="70px" alt="Логотип" id="log"
                     style="height: 70px;">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Переключать навигацию">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="d-flex">
-                <a href="#" class="so">Кнопка 1</a>
-                <a href="#" class="so">Кнопка 2</a>
-                <a href="#" class="so">Кнопка 3</a>
-            </div>
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search...">
-                <button class="search-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <span class="ml-1 hidden md:inline">Search</span>
-                </button>
-            </div>
-        </div>
-    </div>
-    <div>
     </div>
     <div class="profile-container">
         {% if user_logged_in %}
@@ -59,21 +36,14 @@
         {% endif %}
     </div>
 </nav>
-    
-
     <div class="info" style="margin-top: 70px">
         <div class="room-detail">
             <div class="room-gallery">
                 {% for item in items %}
                     {% if item.image %}
-                        <img src="{{ url_for('static', filename='uploads/' + item.image) }}" 
-                             alt="{{ item.name }}" 
-                             width="700px"
-                             onerror="this.onerror=null; this.src='{{ url_for('static', filename='placeholder.png') }}';">
+                        <img src="{{ url_for('static', filename='uploads/' + item.image) }}"  alt="{{ item.name }}"  width="700px"nerror="this.onerror=null; this.src='{{ url_for('static', filename='placeholder.png') }}';">
                     {% else %}
-                        <img src="{{ url_for('static', filename='placeholder.png') }}" 
-                             alt="Placeholder" 
-                             width="700px">
+                        <img src="{{ url_for('static', filename='placeholder.png') }}"  alt="Placeholder" width="700px">
                     {% endif %}
                 {% endfor %}
             </div>

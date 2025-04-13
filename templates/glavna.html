@@ -23,7 +23,6 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-
     <div id="soo" class="modal" data-modal="soo">
         <div class="modal-content">
             <span class="close" data-modal="soo">&times;</span>
@@ -56,12 +55,8 @@
             </form>
         </div>
     </div>
-
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid" style="height: 75px;  display: flex;
-  flex-direction: row;
-  align-items: center;">
-          
+        <div class="container-fluid" style="height: 75px;  display: flex; flex-direction: row; align-items: center;">         
           <div style="display: flex; align-items: center; justify-content: space-between; height: 100%;">     
               <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" height="70px" >            
               <button class="so" id="openModalBtn" data-modal="soo">Регистрация</button>
@@ -90,12 +85,7 @@
                         </div>
                     </div>
                 {% else %}
-                    <img src="https://avatars.githubusercontent.com/u/185120112?v=4" 
-                         alt="Login" 
-                         class="avatar circle" 
-                         id="loginButton" 
-                         height="40" 
-                         width="40">
+                    <img src="https://avatars.githubusercontent.com/u/185120112?v=4" alt="Login" class="avatar circle"  id="loginButton"  height="40" width="40">
                 {% endif %}
             </div>
       </nav>

@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function(e) {
         const target = e.target;
         
-        // Обработка кнопок открытия модальных окон
         if (target.matches('[data-modal]') && !target.matches('.close')) {
             const modalId = target.getAttribute('data-modal');
             const modal = document.getElementById(modalId);

@@ -17,18 +17,10 @@
                 <img src="{{ url_for('static', filename='Screenshot_6.png') }}"  alt="Логотип" height="70px" alt="Логотип" id="log"
                     style="height: 70px;">
             </a>            
-              <button class="so" id="openModalBtn">Регистрация</button>
-              <button class="so" id="openModalBtn2">Вход</button>
               {% if user_logged_in %}
-              <button class="so" id="toggleAddGameForm">Добавить игру</button>
               {% else %}
-              <button class="so" id="toggleAddGameForm" onclick="document.getElementById('loginModal').style.display='block'">Добавить игру</button>
               {% endif %}
             </div>
-            <form class="d-flex ml-auto" role="search" action="/search" method="GET">
-                <input class="form-control_me-2" type="search" placeholder="Поиск" aria-label="Поиск" name="query" required>
-                <button class="btn_btn-outline-success" type="submit">Поиск</button>
-            </form>
             <div class="profile-button">
                 {% if user_logged_in %}
                     <div class="profile-link">
@@ -43,16 +35,10 @@
                         </div>
                     </div>
                 {% else %}
-                    <img src="https://avatars.githubusercontent.com/u/185120112?v=4" 
-                         alt="Login" 
-                         class="avatar circle" 
-                         id="loginButton" 
-                         height="40" 
-                         width="40">
+                    <img src="https://avatars.githubusercontent.com/u/185120112?v=4"  alt="Login" class="avatar circle" id="loginButton" height="40"  width="40">
                 {% endif %}
             </div>
       </nav>
-
     <main class="content">
         {% with messages = get_flashed_messages() %}
             {% if messages %}

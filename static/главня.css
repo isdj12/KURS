@@ -50,13 +50,13 @@
   border-style: none;
   position: relative;
   width: 100vw;
-  height: auto; /* Modified: Use auto to adjust height */
-  min-height: 100vh; /* Ensure the body takes at least the full screen height */
-  font-family: 'Arial', sans-serif; /* Modern font */
+  height: auto; 
+  min-height: 100vh; 
+  font-family: 'Arial', sans-serif; 
   margin: 0;
   overflow-x: hidden;
-  color: var(--accent-color2); /* Dark Gray text */
-  background-color: white; /* Light Gray background */
+  color: var(--accent-color2); 
+  background-color: white; 
   z-index: -1;
 }
 
@@ -92,7 +92,7 @@
     width: 400px;
 }
 
-/* Modal Form Styles */
+
 .modal {
     display: none;
     position: fixed;
@@ -236,7 +236,6 @@ label {
   color: var(--accent-color);
 }
 
-/* Search Form */
 .form-control_me-2 {
   margin-left: 10px;
   border: none;
@@ -260,7 +259,6 @@ label {
   border: none;
 }
 
-/* Genre Section */
 #жанры {
   position: fixed;
   display: flex;
@@ -444,7 +442,7 @@ label {
   .game-indi {
     left: 0;
     width: 100%;
-    top: 140px; /* Высота навбара + высота жанров на мобильных */
+    top: 140px;
     height: calc(100vh - 140px);
     padding: 10px;
   }

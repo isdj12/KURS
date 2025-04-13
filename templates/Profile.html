@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Профиль {{ user.username }}{% endblock %}
+{% block title %}Профиль {{ user.login }}{% endblock %}
 
 {% block content %}
 <div class="profile-container">
@@ -8,7 +8,7 @@
         <img src="https://avatars.githubusercontent.com/u/185120112?v=4" 
              alt="Profile" 
              class="profile-avatar">
-        <h1>{{ user.username }}</h1>
+        <h1>{{ user.login }}</h1>
     </div>
 
     <div class="profile-info">
@@ -16,9 +16,8 @@
             <h2>Информация профиля</h2>
             <div class="info-item">
                 <span class="label">Email:</span>
-                <span class="value">{{ user.email }}</span>
+                <span class="value">{{ user.pochta }}</span>
             </div>
-            <!-- Добавьте другие поля здесь -->
         </div>
     </div>
 </div>

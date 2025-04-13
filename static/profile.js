@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     avatarPreview.src = e.target.result;
-                    // Здесь можно добавить AJAX-запрос для сохранения аватара
                 }
                 reader.readAsDataURL(file);
             }
@@ -28,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     additionalImagePreviews[index].src = e.target.result;
-                    // Здесь можно добавить AJAX-запрос для сохранения изображения
                 }
                 reader.readAsDataURL(file);
             }
