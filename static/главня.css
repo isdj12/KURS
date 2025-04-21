@@ -41,6 +41,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-text-size-adjust: 100%;
 }
 
 .body {
@@ -202,6 +203,11 @@ label {
   height: 75px;
   display: flex;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .navbar-brand {
@@ -726,4 +732,450 @@ label {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Основные стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+}
+
+/* Навигационная панель */
+.navbar {
+    background-color: #333;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ffd700;
+}
+
+/* Основной контент */
+.container {
+    max-width: 1200px;
+    margin: 80px auto 0;
+    padding: 0 1rem;
+}
+
+/* Карточки игр */
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+    width: 100%;
+}
+
+.game-card {
+    width: 100%;
+    max-width: 100%;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+}
+
+.game-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.game-info {
+    padding: 1rem;
+}
+
+.game-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.game-description {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Форма добавления игры */
+.add-game-form {
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Модальные окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1001;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Кнопки */
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    .nav-links {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 0.5rem 0;
+    }
+
+    .game-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 20px auto;
+        padding: 1rem;
+    }
+
+    .add-game-form {
+        width: 95%;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 0.5rem;
+    }
+
+    .game-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .game-card {
+        margin: 0.5rem 0;
+    }
+
+    .modal-content {
+        width: 100%;
+        margin: 10px;
+        padding: 1rem;
+    }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal.show {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Утилиты */
+.text-center {
+    text-align: center;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}
+
+/* Профиль пользователя */
+.profile-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.profile-info {
+    display: grid;
+    gap: 1rem;
+}
+
+/* Фильтры */
+.filter-section {
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.filter-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-group select {
+    min-width: 200px;
+}
+
+/* Сообщения */
+.alert {
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Загрузка файлов */
+.file-upload {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.file-upload input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    opacity: 0;
+    outline: none;
+    cursor: pointer;
+    display: block;
+}
+
+/* Дополнительные стили для мобильных устройств */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 1rem;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .filter-group {
+        flex-direction: column;
+    }
+
+    .filter-group select {
+        width: 100%;
+    }
+}
+
+/* Стили для планшетов */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .game-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .profile-container {
+        max-width: 90%;
+    }
+}
+
+/* Стили для больших экранов */
+@media (min-width: 1025px) {
+    .container {
+        max-width: 1400px;
+    }
+
+    .game-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Улучшения для доступности */
+:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Улучшения для производительности */
+.game-card {
+    will-change: transform;
+}
+
+/* Поддержка тёмной темы */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1a1a;
+        color: #ffffff;
+    }
+
+    .game-card,
+    .add-game-form,
+    .modal-content,
+    .profile-container,
+    .filter-section {
+        background-color: #2d2d2d;
+    }
+
+    .game-description {
+        color: #cccccc;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        background-color: #3d3d3d;
+        color: #ffffff;
+        border-color: #4d4d4d;
+    }
+}
+
+/* Fix for zoom issues */
+@media screen and (min-resolution: 120dpi) {
+    html {
+        -webkit-text-size-adjust: none;
+    }
+}
+
+/* Prevent horizontal scroll */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Improve form elements scaling */
+input, select, textarea {
+    max-width: 100%;
+    font-size: 16px; /* Prevents zoom on mobile */
+}
+
+/* Fix for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    .container {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
 }

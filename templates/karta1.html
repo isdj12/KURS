@@ -55,8 +55,8 @@
                      <div class="tegi_indi">
                         Теги: {{ item.teg1 }}{% if item.teg2 %}, {{ item.teg2 }}{% endif %}{% if item.teg3 %}, {{ item.teg3 }}{% endif %}
                      </div>
-                    <form method="POST">
-                        <input type="submit" value="Загрузить игру" class="indi_download">
+                    <form method="POST" action="{{ url_for('download_game', game_id=item.id) }}">
+                        <input type="submit" value="Скачать игру" class="indi_download">
                     </form>
                       <h1>Планы на будущее</h1>
                      <p>Ставьте перед собой реалистичные краткосрочные и долгосрочные цели... </p>

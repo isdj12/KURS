@@ -24,7 +24,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Настройка для загрузки файлов
 UPLOAD_FOLDER = os.path.join('static', 'uploads')
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_ARCHIVE_EXTENSIONS = {'zip', 'rar', '7z', 'tar', 'gz'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -39,8 +40,11 @@ with app.app_context():
     db.create_all()
     print("Таблицы базы данных созданы")
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def allowed_image_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
+
+def allowed_archive_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_ARCHIVE_EXTENSIONS
 
 @app.route('/', methods=['GET', 'POST'])
 def glavna():
@@ -140,6 +144,33 @@ def karta1(id):
         flash('Item not found')
         return redirect(url_for('glavna'))
 
+@app.route('/download_game/<int:game_id>', methods=['POST'])
+def download_game(game_id):
+    game = Database.query.get_or_404(game_id)
+    
+    # Проверяем, есть ли файл игры
+    if not game.game_file:
+        flash('Файл игры не найден', 'error')
+        return redirect(url_for('karta1', id=game_id))
+    
+    # Путь к файлу игры
+    game_file_path = os.path.join(app.config['UPLOAD_FOLDER'], game.game_file)
+    
+    # Проверяем, существует ли файл
+    if not os.path.exists(game_file_path):
+        flash('Файл игры не найден на сервере', 'error')
+        return redirect(url_for('karta1', id=game_id))
+    
+    # Получаем расширение файла
+    file_extension = os.path.splitext(game.game_file)[1]
+    
+    # Отправляем файл для скачивания
+    return send_from_directory(
+        app.config['UPLOAD_FOLDER'],
+        game.game_file,
+        as_attachment=True,
+        download_name=f"{game.name}{file_extension}"
+    )
 
 @app.route('/Profile/<int:user_id>')
 def prof(user_id):
@@ -180,13 +211,13 @@ def add_game():
         teg2 = request.form.get('teg2')
         teg3 = request.form.get('teg3')
         
-        # Обработка загруженного файла
-        file_path = None
+        # Обработка загруженного изображения
+        image_path = None
         if 'image' in request.files:
             file = request.files['image']
             if file and file.filename:
-                if not allowed_file(file.filename):
-                    flash('Недопустимый формат файла. Разрешены только: png, jpg, jpeg, gif', 'error')
+                if not allowed_image_file(file.filename):
+                    flash('Недопустимый формат файла изображения. Разрешены только: png, jpg, jpeg, gif', 'error')
                     return redirect(url_for('glavna'))
                 
                 # Генерируем уникальное имя файла
@@ -197,11 +228,35 @@ def add_game():
                 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
                 
                 # Сохраняем файл
-                file_path = filename  # Сохраняем только имя файла
+                image_path = filename  # Сохраняем только имя файла
                 full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(full_path)
                 
-                print(f"Файл сохранен: {file_path}")  # Отладочное сообщение
+                print(f"Изображение сохранено: {image_path}")  # Отладочное сообщение
+        
+        # Обработка загруженного файла игры
+        game_file_path = None
+        if 'game_file' in request.files:
+            game_file = request.files['game_file']
+            if game_file and game_file.filename:
+                # Проверяем, что файл является архивом
+                if not allowed_archive_file(game_file.filename):
+                    flash('Недопустимый формат файла игры. Разрешены только архивы: zip, rar, 7z, tar, gz', 'error')
+                    return redirect(url_for('glavna'))
+                
+                # Генерируем уникальное имя файла
+                timestamp = int(time.time())
+                filename = f"game_{timestamp}_{secure_filename(game_file.filename)}"
+                
+                # Создаем директорию, если она не существует
+                os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+                
+                # Сохраняем файл
+                game_file_path = filename  # Сохраняем только имя файла
+                full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                game_file.save(full_path)
+                
+                print(f"Файл игры сохранен: {game_file_path}")  # Отладочное сообщение
 
         # Создаем новую игру
         new_game = Database(
@@ -210,14 +265,15 @@ def add_game():
             teg1=teg1,
             teg2=teg2,
             teg3=teg3,
-            image=file_path,
+            image=image_path,
+            game_file=game_file_path,
             user_id=session.get('user_id'),
             login=session.get('user_login')
         )
 
         db.session.add(new_game)
         db.session.commit()
-        print(f"Игра добавлена: {new_game.name}, изображение: {new_game.image}")  # Отладочное сообщение
+        print(f"Игра добавлена: {new_game.name}, изображение: {new_game.image}, файл игры: {new_game.game_file}")  # Отладочное сообщение
 
         flash('Игра успешно добавлена!')
         return redirect(url_for('glavna'))

@@ -32,18 +32,20 @@ class Database(db.Model):
     teg2 = db.Column(db.String(50))
     teg3 = db.Column(db.String(50))
     image = db.Column(db.String(255))
+    game_file = db.Column(db.String(255))
     user_id = db.Column(db.Integer, db.ForeignKey('account.id'))
     login = db.Column(db.String(80))
     password = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, name, opis, teg1=None, teg2=None, teg3=None, image=None, user_id=None, login=None, password=None):
+    def __init__(self, name, opis, teg1=None, teg2=None, teg3=None, image=None, game_file=None, user_id=None, login=None, password=None):
         self.name = name
         self.opis = opis
         self.teg1 = teg1
         self.teg2 = teg2
         self.teg3 = teg3
         self.image = image
+        self.game_file = game_file
         self.user_id = user_id
         self.login = login
         if password:

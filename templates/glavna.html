@@ -6,12 +6,13 @@
 <!DOCTYPE html>
 <html lang="ru">  <!-- Изменил язык на русский -->
 <head>
-    <title>Каталог игр</title> <!-- Добавил заголовок -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Каталог игр</title> <!-- Добавил заголовок -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
     <link rel="stylesheet" href="{{ css_file }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -182,7 +183,10 @@
             </select><br>
 
             <label for="image">Изображение игры:</label><br>
-            <input type="file" id="image" name="image" accept="image/*" required><br>
+            <input type="file" id="image" name="image" required><br>
+
+            <label for="game_file">Загрузите игру (только архивы):</label><br>
+            <input type="file" id="game_file" name="game_file" accept=".zip,.rar,.7z,.tar,.gz" required><br>
 
             <button class="submit-btn" type="submit">Добавить игру</button>
         </form>
